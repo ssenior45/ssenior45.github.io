@@ -33,3 +33,7 @@ pages_list:
   About: '/about'
   Archive: '/archive'
   Feed: '/atom.xml'
+
+syntax-highlighting:
+  enabled : true
+  css: syntax.css
