@@ -1,6 +1,7 @@
 ---
-published: false
+published: true
 ---
+
 
 ## Build The COSMAC “ELF” A Low-Cost Experimenter’s Microcomputer
 
@@ -28,4 +29,3 @@ function code_example_with_javascript_syntax_highlights() {
   console.log("Showing the syntax highlighting rendering of code using gh-pages-blog.");
 }
 {% endhighlight %}
-
