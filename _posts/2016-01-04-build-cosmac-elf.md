@@ -32,3 +32,4 @@ function code_example_with_javascript_syntax_highlights() {
 {% endhighlight %}
 
 Something else in geordie
+And a liddle bitty bit of
