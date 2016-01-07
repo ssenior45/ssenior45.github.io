@@ -39,3 +39,8 @@ syntax-highlighting:
   css: syntax.css
 
 gems: [jekyll-paginate]
+
+# Only First P Plugin
+only_first_p:
+    show_read_more_link: true
+    read_more_link_text: 'Read more'
