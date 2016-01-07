@@ -1,6 +1,9 @@
 ---
 published: true
+layout: post
+title: Build Cosmac Elf
 ---
+
 
 
 
