@@ -28,17 +28,18 @@ baseurl: ""
 
 
 
-title: "RainyAlley"
-email: "dubuyuye@yeah.net"
-description: "Developer"
-github_username:  "dubuyuye"
-swiftype_searchId: "ncwR9a8S9CTx2q9SgsJm"
-disqus_shortname: "rainyalley"
+title: "Steve Senior"
+email: "ssenior45@googlemail.com"
+description: "Technology enthusiast"
+github_username:  "ssenior45"
+swiftype_searchId: "Xi3WsimxQzyCP1UUDaV3"
+disqus_shortname: "ssenior45"
 
 
 
-url: "http://blog.rainyalley.com"
-imgrepo: "http://blog.rainyalley.com/static/img"
+url: "http://stevensenior.co.uk
+imgrepo: "http://stevensenior.co.uk/static/img"
 #url: "http://127.0.0.1:4000"
 #imgrepo: "http://127.0.0.1:4000/static/img"
 
+gems: [jekyll-paginate]
