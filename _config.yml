@@ -38,4 +38,4 @@ syntax-highlighting:
   enabled : true
   css: syntax.css
 
-# gems: [jekyll-paginate]
+gems: [jekyll-paginate]
