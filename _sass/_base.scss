@@ -2,6 +2,8 @@
 //
 // Update the foundational and global aspects of the page.
 
+@import url(https://fonts.googleapis.com/css?family=Noto+Sans:400,400italic,700italic,700);
+
 * {
   -webkit-box-sizing: border-box;
      -moz-box-sizing: border-box;
@@ -15,8 +17,8 @@ body {
 }
 
 html {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 16px;
+  font-family: "Noto Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px;
   line-height: 1.5;
 
   @media (min-width: 38em) {
