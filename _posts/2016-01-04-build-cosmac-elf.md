@@ -4,6 +4,7 @@ published: true
 
 
 
+
 ## Build The COSMAC “ELF” A Low-Cost Experimenter’s Microcomputer
 
 I’ve recently had a chance to start to re-read *Assembly Language Step-by-Step (2nd Edition) by Jeff Duntemann*.
@@ -34,4 +35,4 @@ function code_example_with_javascript_syntax_highlights() {
 Something else in geordie
 And a liddle bitty bit of
 aasdasdsad
-asdasdasdassss
+asdasdasdasssspppp
