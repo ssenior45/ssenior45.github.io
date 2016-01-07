@@ -8,6 +8,7 @@ title: Build Cosmac Elf
 
 
 
+
 ## Build The COSMAC “ELF” A Low-Cost Experimenter’s Microcomputer
 
 I’ve recently had a chance to start to re-read *Assembly Language Step-by-Step (2nd Edition) by Jeff Duntemann*.
@@ -40,3 +41,4 @@ And a liddle bitty bit of
 aasdasdsadsssss
 asdasdasdasssspppp
 back to work for me!
+ssdsd
