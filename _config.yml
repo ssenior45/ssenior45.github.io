@@ -8,7 +8,7 @@ permalink:           pretty
 title:               Steve Senior 
 tagline:             Ramblings of an IT geek
 url:                 http://stevensenior.co.uk
-paginate:            1
+paginate:            5
 baseurl:             http://stevensenior.co.uk
 
 # Assets
