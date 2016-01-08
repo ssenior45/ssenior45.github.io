@@ -38,7 +38,6 @@ published: true
 .navbar-tiffany .nav>li>a:hover,
 .navbar-tiffany .nav>li>a:focus,
 .navbar-tiffany .nav>li.active>a {
-    background: rgba(0, 0, 0, 0.2);
     color: #fff;
 }
 .navbar-tiffany .navbar-toggle{
@@ -97,7 +96,6 @@ html{
     margin: 0px 0px 0px 0px;
 }
 body {
-    background-image: url({{ "/static/bg.jpg" | prepend: site.baseurl | prepend: site.url }});
     height: 100%;
     padding: 0px 0px 0px 0px;
     margin: 0px 0px 0px 0px;
