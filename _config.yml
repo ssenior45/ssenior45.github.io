@@ -28,7 +28,7 @@ redcarpet:
 
 paginate: 10
 paginate_path: ":num"
-baseurl: ""
+baseurl: "http://www.stevensenior.co.uk"
 
 
 
