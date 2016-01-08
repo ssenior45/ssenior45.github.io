@@ -8,6 +8,7 @@ published: true
 ---
 
 
+
 <div class="row">
     <div class="content col-lg-9">
         <div class="sheet post">
@@ -38,8 +39,11 @@ published: true
               <a href="#" class="bds_copy" data-cmd="copy" title="分享到复制网址"></a>
           </div>
         </div>
-        <div class="pad-min"></div>     
-      {% include comments.html %}
+        <div class="pad-min"></div>   
+      <div id="post-comment" class="sheet post">
+            <div id="disqus_thread">{% include comments.html %}</div>
+        </div>
+      
     </div>
     <div class="content-navigation col-lg-3">
       <div class="shadow-bottom-center" >
