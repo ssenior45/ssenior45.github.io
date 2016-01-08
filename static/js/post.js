@@ -4,12 +4,13 @@ published: true
 ---
 
 
+
 /**
  * 页面ready方法
  */
 $(document).ready(function() {
     generateContent();
-    share();
+    //share();
     //disqus();
 });
 
