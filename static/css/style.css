@@ -4,10 +4,10 @@ published: true
 ---
 
 
+
 @import url(https://fonts.googleapis.com/css?family=Noto+Sans:400,400italic,700italic,700);
 
 .navbar-tiffany{
-    background-color: #D41A1A;
     border-top: 1px solid rgba(255,255,255,0.2);
     border-bottom: 1px solid rgba(0,0,0,0.1);
     box-shadow: 2px 4px 5px rgba(3,3,3,0.2);
@@ -31,7 +31,7 @@ published: true
 .navbar-tiffany .navbar-brand,
 .navbar-tiffany .navbar-text,
 .navbar-tiffany .nav>li>a{
-    color: #fff;
+    color: #515151;
 }
 
 
