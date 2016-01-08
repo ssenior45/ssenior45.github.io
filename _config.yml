@@ -1,7 +1,10 @@
 permalink: /:year-:month-:day/:title/
 
 #highlighter: pygments
-
+syntax-highlighting:
+  enabled : true
+  css: syntax.css
+  
 markdown: redcarpet
 redcarpet:
   extensions: [
