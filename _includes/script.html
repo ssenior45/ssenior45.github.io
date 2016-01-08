@@ -4,5 +4,6 @@
     <script type="text/javascript" src="{{'/static/js/script.js' | prepend:site.baseurl | prepend: site.url  }}"></script>
     {% for script in page.scripts %}<script type="text/javascript" src="{{'/static/js/' | prepend:site.baseurl | append: script | prepend: site.url }}"></script>
     {% endfor %}
+   <script type="text/javascript" src="{{'/static/js/toc.js' | prepend:site.baseurl | prepend: site.url  }}"></script>
+   <script type="text/javascript" src="{{'/static/js/post.js' | prepend:site.baseurl | prepend: site.url  }}"></script>
 </div>
-
