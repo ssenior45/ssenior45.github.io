@@ -2,9 +2,9 @@
 layout: page
 title: Link
 permalink: /link/
-icon: octicon-link-external
+icon: "octicon-link-external"
+published: true
 ---
 
-###[东方星痕](http://www.lxy520.net/)
 
-###[Cass](http://cassite.net/)
+###Gluent [www.gluent.com]
