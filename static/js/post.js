@@ -1,6 +1,8 @@
 ---
-    layout: null
+layout: null
+published: true
 ---
+
 
 /**
  * 页面ready方法
@@ -8,7 +10,7 @@
 $(document).ready(function() {
     generateContent();
     share();
-    disqus();
+    //disqus();
 });
 
 /**
