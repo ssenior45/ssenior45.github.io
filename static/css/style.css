@@ -7,6 +7,7 @@ published: true
 
 
 
+
 @import url(https://fonts.googleapis.com/css?family=Noto+Sans:400,400italic,700italic,700);
 
 .navbar-tiffany{
@@ -116,7 +117,7 @@ code,pre{
 
 body,.sheet{
     font-size: 14px;
-    line-height: 1.5;
+    /*line-height: 1.5;*/
 }
 
 
