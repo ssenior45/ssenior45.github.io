@@ -5,6 +5,7 @@ published: true
 
 
 
+
 @import url(https://fonts.googleapis.com/css?family=Noto+Sans:400,400italic,700italic,700);
 
 .navbar-tiffany{
@@ -101,11 +102,18 @@ body {
     margin: 0px 0px 0px 0px;
 }
 
-body,code,pre{
+body{
     font-family:  "Noto Sans", "Menlo", "Monaco", "Consolas", "Courier New", "monospace", "Helvetica", "Tahoma", "Arial", sans-serif;
 }
 
-body,.sheet,pre,code{
+code,pre{
+    font-family:  "Menlo", "Monaco", "Consolas", "Courier New", "monospace", "Helvetica", "Tahoma", "Arial", sans-serif;
+  font-size: 14px;
+    line-height: 1.5;
+  background-color: #d9d9d9;
+}
+
+body,.sheet{
     font-size: 14px;
     line-height: 1.5;
 }
