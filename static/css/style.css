@@ -38,7 +38,7 @@ published: true
 .navbar-tiffany .nav>li>a:hover,
 .navbar-tiffany .nav>li>a:focus,
 .navbar-tiffany .nav>li.active>a {
-    color: #fff;
+    color: #2ca6cb;
 }
 .navbar-tiffany .navbar-toggle{
     border-color: #fff;
