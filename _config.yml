@@ -24,13 +24,9 @@ redcarpet:
 #   ,"html_toc"
   ]
 
-
-
 paginate: 10
 paginate_path: ":num"
 baseurl: ""
-
-
 
 title: "Steve Senior"
 email: "ssenior45@googlemail.com"
@@ -39,11 +35,14 @@ github_username:  "ssenior45"
 swiftype_searchId: "Xi3WsimxQzyCP1UUDaV3"
 disqus_shortname: "ssenior45"
 
-
 #
 url: "http://stevensenior.co.uk"
 imgrepo: "http://stevensenior.co.uk/static/img"
 #url: "http://127.0.0.1:4000"
 #imgrepo: "http://127.0.0.1:4000/static/img"
+
+blog_title: "Steve Senior"
+blog_description: "Technology enthusiast"
+site_url: "http://stevensenior.co.uk"
 
 gems: [jekyll-paginate]
