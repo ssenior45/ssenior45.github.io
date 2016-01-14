@@ -3,12 +3,37 @@ layout: null
 published: true
 ---
 
-
-
-
-
-
 @import url(https://fonts.googleapis.com/css?family=Noto+Sans:400,400italic,700italic,700);
+
+h1 {
+    font-size: 28px;
+    display: block;
+    -webkit-margin-before: 0.67em;
+    -webkit-margin-after: 0.67em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    font-weight: bold;
+}
+
+h2 {
+	color: #393939;
+    display: block;
+    font-size: 1.5em;
+    -webkit-margin-before: 0.83em;
+    -webkit-margin-after: 0.83em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    font-weight: bold;
+}
+
+h1, h2, h3 {
+    line-height: 1.1;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: #222;
+    /*margin: 0 0 20px;*/
+}
 
 .navbar-tiffany{
     border-top: 1px solid rgba(255,255,255,0.2);
