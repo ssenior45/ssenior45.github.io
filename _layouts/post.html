@@ -12,13 +12,14 @@ published: true
 
 
 
+
 <div class="row">
     <div class="content col-lg-9">
         <div id="sheet_post_id" class="sheet post">
           <header>
             <h2>{{ page.title }}</h2>
             <p class="post-meta">
-                <span class="octicon octicon-clock"></span> {{ page.date | date: "%b %-d, %Y" }}{% if page.author %} • {{ page.author }}{% endif %}{% if page.meta %} • {{ page.meta }}{% endif %}
+                <span class="octicon octicon-clock"></span> {{ page.date | date: "%b %-d %Y" }}{% if page.author %} • {{ page.author }}{% endif %}{% if page.meta %} • {{ page.meta }}{% endif %}
             </p>
             <p class="post-tag">
                 <span>{% for cat in page.categories %}<a href="{{ '/category' | prepend: site.baseurl | prepend: site.url }}/#{{ cat }}"><span class="octicon octicon-list-unordered"></span>&nbsp;{{ cat }}</a>{% endfor %}</span>
