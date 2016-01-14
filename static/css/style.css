@@ -4,6 +4,7 @@ published: true
 ---
 
 
+
 @import url(https://fonts.googleapis.com/css?family=Noto+Sans:400,400italic,700italic,700);
 
 h1 {
@@ -147,8 +148,8 @@ body{
 
 code,pre{
     font-family:  "Menlo", "Monaco", "Consolas", "Courier New", "monospace", "Helvetica", "Tahoma", "Arial", sans-serif;
-  font-size: 14px;
-    line-height: 1.5;
+  font-size: 12px;
+    /*line-height: 1.5;*/
   background-color: #d9d9d9;
 }
 
