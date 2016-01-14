@@ -1,7 +1,10 @@
 ---
 layout: default
-styles: [article-list.css]
+styles: 
+  - "article-list.css"
+published: true
 ---
+
 
 <div class="row index">
   <div class="col-sm-10 col-sm-offset-1 col-lg-9 col-lg-offset-1_5">
@@ -10,7 +13,7 @@ styles: [article-list.css]
           {% for post in paginator.posts %}
             <article>
                 <header>
-                    <a href="{{ site.baseurl | prepend: site.url  }}/archive/#{{ post.date | date: '%Y-%m-%d' }}"><span class="octicon octicon-calendar"></span>&nbsp;<span>{{ post.date | date: "%Y-%m-%d" }}</span></a>
+                    <a href="{{ site.baseurl | prepend: site.url  }}/archive/#{{ post.date | date: '%Y-%m-%d' }}"><span class="octicon octicon-calendar"></span>&nbsp;<span>{{ post.date | date: "%b %d %Y" }}</span></a>
                 </header>
                 <div class="module">
                   <a class="title" href="{{ post.url | prepend: site.baseurl | prepend: site.url }}">
