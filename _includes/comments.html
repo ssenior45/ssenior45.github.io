@@ -9,7 +9,7 @@ if (screen.width < 600) {
 	w = screen.width - 20;
 } 
 else {
-  	w = document.getElementById("sheet_post_id").width - 20;
+  	w = document.getElementById("sheet_post_id").offsetWidth - 20;
 }
   
 gapi.comments.render('comments', {
