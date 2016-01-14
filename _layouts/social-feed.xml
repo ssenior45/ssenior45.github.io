@@ -40,9 +40,8 @@ published: true
                     {% assign space_left = space_left | minus: new_tag.size %}
                 {% endif %}
             {% endfor %}
-	
-    		{% assign post_url = post.url | prepend: site.site_url %}
-            {% assign post_title = site.twitter_format | replace: '@title', post.title | replace: '@tags', post_tags | replace: '@url', post_tags %}
+	    		
+            {% assign post_title = site.twitter_format | replace: '@title', post.title | replace: '@tags', post_tags | replace: '@url', '' %}
         {% else %}
             {% assign post_title = post.title %}
         {% endif %}
