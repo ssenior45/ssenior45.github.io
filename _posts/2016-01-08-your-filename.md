@@ -4,7 +4,7 @@ layout: post
 title: "Build The COSMAC “ELF” A Low-Cost Experimenter’s Microcomputer"
 tags: computing old
 categories: generic
-share: linkedin
+share: twitter
 ---
 
 
