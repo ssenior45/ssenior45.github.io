@@ -8,8 +8,9 @@ var w = 600;
 if (screen.width < 600) {
 	w = screen.width - 20;
 } 
-  /*  else {
-  }*/
+else {
+  	w = document.getElementById("sheet_post_id").width - 20;
+}
   
 gapi.comments.render('comments', {
     href: window.location,
