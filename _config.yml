@@ -44,5 +44,8 @@ imgrepo: "http://stevensenior.co.uk/static/img"
 blog_title: "Steve Senior"
 blog_description: "Technology enthusiast"
 site_url: "http://stevensenior.co.uk"
+twitter_format: "@title: @url@tags"
+twitter_url_length: 22
+twitter_max_length: 140
 
 gems: [jekyll-paginate]
