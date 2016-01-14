@@ -3,11 +3,13 @@
 <div id="comments"></div>
 <script>
 
-/*if (screen.width >= 600) {
-	// download complicated script
-	// swap in full-source images for low-source ones
-}*/
-var w = screen.width - 20;
+var w = 600;
+  
+if (screen.width < 600) {
+	w = screen.width - 20;
+} 
+  /*  else {
+  }*/
   
 gapi.comments.render('comments', {
     href: window.location,
@@ -16,4 +18,3 @@ gapi.comments.render('comments', {
     view_type: 'FILTERED_POSTMOD'
 });
 </script>
-
