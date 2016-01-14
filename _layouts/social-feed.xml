@@ -1,6 +1,8 @@
 ---
-layout: social-feed
+layout: "social-feed"
+published: true
 ---
+
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
@@ -39,7 +41,7 @@ layout: social-feed
                 {% endif %}
             {% endfor %}
 
-            {% assign post_title = site.twitter_format | replace: '@title', post.title | replace: '@tags', post_tags | replace: '@url', post.url %}
+            {% assign post_title = site.twitter_format | replace: '@title', post.title | replace: '@tags', post_tags | replace: '@url', post.url | prepend: site.site_url %}
         {% else %}
             {% assign post_title = post.title %}
         {% endif %}
