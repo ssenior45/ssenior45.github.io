@@ -41,7 +41,7 @@ published: true
 
     		{% assign post_url = post.url | prepend: site.site_url %}
     
-    		{% assign post_title = site.twitter_format | replace: '@title', {{ post.title | slice: 0, space_left }} | replace: '@tags', post_tags | replace: '@url', post_url %}
+    		{% assign post_title = site.twitter_format | replace: '@title', {{ post.title | slice: 0, 20 }} | replace: '@tags', post_tags | replace: '@url', post_url %}
         {% else %}
     		{% assign space_left = site.twitter_max_length | minus: site.twitter_url_length %}
             {% assign post_title = site.twitter_format | replace: '@title', {{ post.title | slice: 0, space_left }} | replace: '@tags', '' | replace: '@url', post_url %}
