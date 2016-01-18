@@ -1,5 +1,8 @@
 ---
 published: true
+layout: post
+tags: some cool feature
+share: "twitter --twitter-hashtags"
 ---
 
 ## A New Post
