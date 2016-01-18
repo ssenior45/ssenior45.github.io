@@ -18,8 +18,8 @@ published: true
     {% for post in site.posts limit:10 %}
         {% assign share_on = post.share | downcase %}
 
-        {% if share_on contains platform %}
-        <item>
+       {% if share_on contains platform %}
+       <item>
             <title>{{ post.title | xml_escape }}</title>
             <description>{{ post.content | xml_escape }}</description>
             <pubDate>{{ post.date | date_to_rfc822 }}</pubDate>
@@ -30,7 +30,7 @@ published: true
             {% endfor %}
             {% for cat in post.categories %}
             <category>{{ cat | xml_escape }}</category>
-            <img src="{{ "/static/img/DSC00188.JPG" | prepend: site.blog_url | prepend: site.site_url }}" height="42" width="42"></img>
+            <image>{{ "/static/img/DSC00188.JPG" | prepend: site.blog_url | prepend: site.site_url }}</image> 
             {% endfor %}
         </item>
         {% endif %}
