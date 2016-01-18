@@ -17,7 +17,7 @@ published: true
 
     {% for post in site.posts limit:10 %}
         {% assign share_on = post.share | downcase %}
-        {% assign content = post.content | prepend: '<img src="http://stevensenior.co.uk/static/img/DSC00188.JPG">' %}
+        {% assign content = post.content | prepend: '<img src="http://stevensenior.co.uk/static/img/DSC00188.JPG"> width="150" height="112"' %}
        {% if share_on contains platform %}
        <item>
             <title>{{ post.title | xml_escape }}</title>
