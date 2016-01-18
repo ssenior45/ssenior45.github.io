@@ -25,8 +25,7 @@ published: true
             <pubDate>{{ post.date | date_to_rfc822 }}</pubDate>
             <link>{{ post.url | prepend: site.site_url }}</link>
             <guid isPermaLink="true">{{ post.url | prepend: site.site_url }}</guid>
-            <imageurl>{{ "/static/img/DSC00188.JPG" | prepend: site.blog_url | prepend: site.site_url }}</imageurl> 
-            {% endfor %}
+            <imageurl>{{ "/static/img/DSC00188.JPG" | prepend: site.blog_url | prepend: site.site_url }}</imageurl>
         </item>
         {% endif %}
     {% endfor %}
