@@ -22,7 +22,7 @@ published: true
         {% if share_on contains '--twitter-hashtags' %}
           
             {% assign format_parsed = site.twitter_format | replace: '@title', post.title | replace: '@url', '' | replace: '@tags', '' | size %}
-    		{% assign space_left = site.twitter_max_length | minus: format_parsed.size %}
+    		{% assign space_left = site.twitter_max_length | minus: site.twitter_url_length %}
     
             {% assign post_tags = '' %}
         
@@ -47,7 +47,8 @@ published: true
     		{% assign post_title = site.twitter_format | replace: '@title', ptitle | replace: '@tags', post_tags | replace: '@url', post_url %}
         {% else %}
     		{% assign space_left = site.twitter_max_length | minus: site.twitter_url_length %}
-            {% assign post_title = site.twitter_format | replace: '@title', {{ post.title | slice: 0, space_left }} | replace: '@tags', '' | replace: '@url', post_url %}
+    		{% assign ptitle = post.title | slice: 0, space_left %} 
+            {% assign post_title = site.twitter_format | replace: '@title', ptitle | replace: '@tags', '' | replace: '@url', post_url %}
         {% endif %}
 
         {% if share_on contains platform %}
