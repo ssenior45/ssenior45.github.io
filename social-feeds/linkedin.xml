@@ -30,7 +30,7 @@ published: true
             {% endfor %}
             {% for cat in post.categories %}
             <category>{{ cat | xml_escape }}</category>
-            <image>{{ "/static/img/DSC00188.JPG" | prepend: site.blog_url | prepend: site.site_url }}</image> 
+            <imageurl>{{ "/static/img/DSC00188.JPG" | prepend: site.blog_url | prepend: site.site_url }}</imageurl> 
             {% endfor %}
         </item>
         {% endif %}
