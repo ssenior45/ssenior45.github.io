@@ -17,11 +17,11 @@ published: true
 
     {% for post in site.posts limit:10 %}
         {% assign share_on = post.share | downcase %}
-
+        {% assign content = post.content | prepend: '<img src="http://stevensenior.co.uk/static/img/DSC00188.JPG">' %}
        {% if share_on contains platform %}
        <item>
             <title>{{ post.title | xml_escape }}</title>
-            <description>{{ post.content | xml_escape }}</description>
+            <description>{{ content | xml_escape }}</description>
             <pubDate>{{ post.date | date_to_rfc822 }}</pubDate>
             <link>{{ post.url | prepend: site.site_url }}</link>
             <guid isPermaLink="true">{{ post.url | prepend: site.site_url }}</guid>
