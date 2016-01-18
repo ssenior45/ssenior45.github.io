@@ -22,7 +22,7 @@ published: true
         {% if share_on contains '--twitter-hashtags' %}
           
             {% assign format_parsed = site.twitter_format | replace: '@title', post.title | replace: '@url', '' | replace: '@tags', '' | size %}
-    		{% assign space_left = site.twitter_max_length | minus: site.twitter_url_length %}
+    		{% assign space_left = site.twitter_max_length %}
     
             {% assign post_tags = '' %}
         
