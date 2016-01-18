@@ -3,6 +3,7 @@ layout: null
 published: true
 ---
 
+
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
@@ -19,14 +20,11 @@ published: true
         {% assign share_on = post.share | downcase %}
 
         {% if share_on contains '--twitter-hashtags' %}
+          
             {% assign format_parsed = site.twitter_format | replace: '@title', post.title | replace: '@url', '' | replace: '@tags', '' | size %}
+    
             {% assign post_tags = '' %}
-            {% assign space_left = site.twitter_max_length | minus: format_parsed.size %}
-
-            {% if site.twitter_format contains '@url' %}
-                {% assign space_left = space_left | minus: site.twitter_url_length %}
-            {% endif %}
-
+        
             {% for tag in post.tags %}
                 {% capture new_tag %} #{{ tag }}{% endcapture %}
                 {% assign new_space_left = space_left | minus: new_tag.size %}
@@ -36,11 +34,17 @@ published: true
                     {% assign space_left = space_left | minus: new_tag.size %}
                 {% endif %}
             {% endfor %}
-			
+    
+            {% if site.twitter_format contains '@url' %}
+                {% assign space_left = space_left | minus: site.twitter_url_length %}
+            {% endif %}
+
     		{% assign post_url = post.url | prepend: site.site_url %}
-    		{% assign post_title = site.twitter_format | replace: '@title', post.title | replace: '@tags', post_tags | replace: '@url', post_url %}
+    
+    		{% assign post_title = site.twitter_format | replace: '@title', {{ post.title | slice: 0, space_left }} | replace: '@tags', post_tags | replace: '@url', post_url %}
         {% else %}
-            {% assign post_title = post.title %}
+    		{% assign space_left = site.twitter_max_length | minus: site.twitter_url_length %}
+            {% assign post_title = site.twitter_format | replace: '@title', {{ post.title | slice: 0, space_left }} | replace: '@tags', '' | replace: '@url', post_url %}
         {% endif %}
 
         {% if share_on contains platform %}
