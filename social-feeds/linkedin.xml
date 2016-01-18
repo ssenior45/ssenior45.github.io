@@ -20,7 +20,7 @@ published: true
 
         {% if share_on contains platform %}
         <item>
-            <title>{{ post_title | xml_escape }}</title>
+            <title>{{ post.title | xml_escape }}</title>
             <description>{{ post.content | xml_escape }}</description>
             <pubDate>{{ post.date | date_to_rfc822 }}</pubDate>
             <link>{{ post.url | prepend: site.site_url }}</link>
