@@ -60,5 +60,15 @@
 .highlight .vi { color: #008080 } /* Name.Variable.Instance */
 .highlight .il { color: #009999 } /* Literal.Number.Integer.Long */
 .highlight .lineno{ color: rgba(0,0,0,0.3); border-right: solid 1px rgba(0,0,0,0.3); padding-right: 5px;}
-pre { white-space: pre; overflow: auto; }
+.highlight pre code * {
+  white-space: nowrap;    // this sets all children inside to nowrap
+}
+
+.highlight pre {
+  overflow-x: auto;       // this sets the scrolling in x
+}
+
+.highlight pre code {
+  white-space: pre;       // forces <code> to respect <pre> formatting
+}
 
