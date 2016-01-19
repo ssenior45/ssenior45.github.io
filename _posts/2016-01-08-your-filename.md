@@ -40,6 +40,14 @@ function code_example_with_javascript_syntax_highlights() {
 }
 {% endhighlight %}
 
+code
+
+```
+function code_example_with_javascript_syntax_highlights() {
+  console.log("Showing the syntax highlighting rendering of code using gh-pages-blog.");
+}
+```
+
 ###And double indent
 Something else in geordie
 And a liddle bitty bit of
@@ -95,4 +103,35 @@ and   status like '%&3%'
 order by sql_exec_start desc
 ) where rownum <= nvl(&4,10)
 /
+```
+
+Show me the last 20 statements currently executing:
+
+```
+SQL> @/shared/oracle/ssenior/scripts/sql_monitor_summary.sql % % EXECUTING 20
+
+INST STATUS                      SID SQL_ID        SQL_EXEC_ID SQL_EXEC_START      LAST_REFRESH_TIME       PX_REQ     PX_GOT PLAN_HASH_VALUE   DURATION     DBTIME BUFFER_GETS DISK_READS  IO_MBYTES
+---- -------------------- ---------- ------------- ----------- ------------------- ------------------- ---------- ---------- --------------- ---------- ---------- ----------- ---------- ----------
+   1 EXECUTING                  3507 5bs6rvnn7wn3q    16867067 24-Nov-15 16:41:02  24-Nov-15 16:41:08                             1705989724          6       5.95        1965        717          6
+   1 EXECUTING                  1445 5bs6rvnn7wn3q    16867060 24-Nov-15 16:40:52  24-Nov-15 16:41:08                             1705989724         16      15.93        9126       1838         15
+   1 EXECUTING                  1399 5bs6rvnn7wn3q    16867057 24-Nov-15 16:40:43  24-Nov-15 16:41:07                             1705989724         24      24.12       29132       4062         32
+   1 EXECUTING                  2358 7sju427q5ht9y    16796216 24-Nov-15 16:40:43  24-Nov-15 16:41:07                             3637077694         24      23.55        7519       2857         22
+   1 EXECUTING                  1058 7sju427q5ht9y    16796214 24-Nov-15 16:40:38  24-Nov-15 16:41:08                             3637077694         30      29.86       22692       3438         27
+   1 EXECUTING                  1540 7sju427q5ht9y    16796213 24-Nov-15 16:40:33  24-Nov-15 16:41:07                             3637077694         34      33.73       24503       2297         18
+   1 EXECUTING                  3126 7sju427q5ht9y    16796212 24-Nov-15 16:40:17  24-Nov-15 16:41:07                             3637077694         50         50       15312       6555         51
+   1 EXECUTING                   872 7sju427q5ht9y    16796211 24-Nov-15 16:40:12  24-Nov-15 16:41:08                             3637077694         56      55.69       16798       6832         53
+   1 EXECUTING                  2835 5bs6rvnn7wn3q    16867035 24-Nov-15 16:40:09  24-Nov-15 16:41:08                             1705989724         59      59.38       13092       9092         71
+   1 EXECUTING                  2551 7sju427q5ht9y    16796210 24-Nov-15 16:40:09  24-Nov-15 16:41:07                             3637077694         58      57.89       19852       6760         53
+   1 EXECUTING                  3794 7sju427q5ht9y    16796209 24-Nov-15 16:40:05  24-Nov-15 16:41:07                             3637077694         62      61.63       19338       6876         54
+   1 EXECUTING                   345 7sju427q5ht9y    16796208 24-Nov-15 16:39:57  24-Nov-15 16:41:07                             3637077694         70      69.98       29459       7832         61
+   1 EXECUTING                  1586 fmsyr6bs8xvr9    16802312 24-Nov-15 16:39:52  24-Nov-15 16:41:07                                      0         75      75.34       69532       9704         76
+   1 EXECUTING                  2837 7sju427q5ht9y    16796207 24-Nov-15 16:39:39  24-Nov-15 16:41:07                             3637077694         88      88.28       24497       8184         64
+   1 EXECUTING                  3607 7sju427q5ht9y    16796206 24-Nov-15 16:39:26  24-Nov-15 16:41:07                             3637077694        101     101.94       29166      12650         99
+   1 EXECUTING                   482 7sju427q5ht9y    16796202 24-Nov-15 16:39:06  24-Nov-15 16:41:08                             3637077694        122     122.94       37511      15595        122
+   1 EXECUTING                  2595 7sju427q5ht9y    16796201 24-Nov-15 16:38:57  24-Nov-15 16:41:08                             3637077694        131     131.23       44736      15974        125
+   1 EXECUTING                     3 7sju427q5ht9y    16796200 24-Nov-15 16:38:53  24-Nov-15 16:41:08                             3637077694        135     135.11       45073      15748        123
+   1 EXECUTING                  1972 7sju427q5ht9y    16796197 24-Nov-15 16:38:34  24-Nov-15 16:41:08                             3637077694        154     155.06       68470      20222        158
+   1 EXECUTING                  1782 apq6011myzjp9    16777319 24-Nov-15 16:35:50  24-Nov-15 16:41:08                             3094607888        318      320.2     4650836      44820      33911
+
+20 rows selected.
 ```
