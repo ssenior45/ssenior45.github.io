@@ -10,6 +10,7 @@ published: true
  */
 $(document).ready(function() {
     generateContent();
+    hljs.initHighlightingOnLoad();
     //share();
     //disqus();
 });
