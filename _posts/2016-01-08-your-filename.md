@@ -47,3 +47,52 @@ aasdasdsadsssss
 asdasdasdasssspppp
 back to work for me!
 ssdsdssss
+
+{% highlight sql %}
+--------------------------------------------------------------------------------
+--
+-- File name:   sql_monitor_summary.sql
+--
+-- Purpose:     Show gv$sql_monitor summary line items
+--
+-- Author:      Steve Senior
+--
+-- Usage:       sql_monitor_summary [instance] [sql_id] [status] [top_n_rows]
+--
+--              e.g. @sql_monitor_summary.sql % 5bs6rvnn7wn3q DONE 13
+--                   @sql_monitor_summary.sql % % EXECUTING 15
+--
+-- Other:
+--
+--------------------------------------------------------------------------------
+set lines 200 pages 1000 verify off
+col inst for 99
+col status for a20
+col SQL_EXEC_START for a19
+col LAST_REFRESH_TIME for a19
+
+select * from (
+select inst_id inst
+      , status
+      , sid
+      , sql_id
+      , sql_exec_id
+      , to_char(sql_exec_start,'DD-Mon-YY HH24:MI:SS') sql_exec_start
+      , to_char(last_refresh_time,'DD-Mon-YY HH24:MI:SS') last_refresh_time
+      , px_servers_requested px_req
+      , px_servers_allocated px_got
+      , sql_plan_hash_value plan_hash_value
+      , round((last_refresh_time-sql_exec_start)*86400,1) duration
+      --, round(elapsed_time/1000000,2) duration
+      , round((application_wait_time+concurrency_wait_time+cluster_wait_time+user_io_wait_time+plsql_exec_time+java_exec_time+cpu_time)/1000000,2) dbtime
+      , buffer_gets
+      , disk_reads
+      , round((physical_read_bytes+physical_write_bytes)/1024/1024) io_mbytes
+from  gv$sql_monitor
+where inst_id like '%&1%'
+and   sql_id like '%&2%'
+and   status like '%&3%'
+order by sql_exec_start desc
+) where rownum <= nvl(&4,10)
+/
+{% endhighlight %}
