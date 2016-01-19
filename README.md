@@ -1,34 +1,72 @@
-##[点我查看中文说明](https://github.com/dubuyuye/blog/blob/gh-pages/README_zh_CN.md)
-
-# Blog Address
-
-<http://blog.rainyalley.com/>
 
 
-# Must Modify
+# Basics of post writing
 
-## 1.swiftype
+[Markdown Cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)
 
-This service provides the on-site search function.
+Always use ``` for code blocks
 
-Service address： <https://swiftype.com/>.
+Headers (h1, h2 etc) become the TOC entries.
 
-After the setup is complete， you need to modify the `swiftype_searchId` in `_config.yml`.
+Always start a post with an introductory paragraph. This will appear on the home page of the blog as the excerpt and also will look better when you are social sharing (see below).
 
-In your swiftype engine, go to `Setup and integration` -> `Install Search`, you could find the `swiftype_searchId`.
 
-```html
-<script type="text/javascript">
-...
-...
-  _st('install','swiftype_searchId','2.0.0');
-</script>
+# Meta-Tags
+
+Referenced [here](http://jekyllrb.com/docs/frontmatter/)
+
+##Essential
+
+```
+---
+published: true
+layout: post
+title: "Build The COSMAC ELF A Low-Cost Experimenter’s Microcomputer"
+---
 ```
 
-## 2.disqus
+##Optional
 
-This service provides the comment function.
+```
+---
+tags: computing old
+categories: generic
+date: "YYYY-MM-DD HH:MM:SS"
+---
+```
 
-Service address： <https://disqus.com/>.
+##Social Sharing
 
-After the setup is complete， you need to modify the `disqus_shortname` in `_config.yml`.
+```
+---
+share: twitter --twitter-hashtags linkedin
+---
+```
+
+###LinkedIn
+
+Include the linkedin word in the share tag.
+
+This will add an entry to the [linkedin rss feed](http://stevensenior.co.uk/social-feeds/linkedin.xml)
+
+This is periodically polled by this [IFTTT recipe](https://ifttt.com/myrecipes/personal/32495441) which will post on LinkedIn.
+
+
+###Twitter
+
+Include the twitter word in the share tag.
+
+Optionally include the --twitter-hastags option after it. This will convert all tag entries to hashtags.
+
+This will add an entry to the [twitter rss feed](http://stevensenior.co.uk/social-feeds/twitter.xml)
+
+This is periodically polled by this [IFTTT recipe](https://ifttt.com/myrecipes/personal/32351145) which will post on Twitter.
+
+
+# Search
+
+The on-site search function is provided by a free third party service from [Swiftype](https://swiftype.com/)
+
+The service should periodically sweep the site and update the search entries.
+
+You can force a refresh by clicking on the [recrawl](https://swiftype.com/engines/stevensenior-dot-co-dot-uk/domains) button here. You are limited to the amount of manual recrawls you can perform, so use this judicially.
