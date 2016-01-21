@@ -6,7 +6,11 @@
 
 Always use ``` for code blocks
 
-Headers (h1, h2 etc) become the TOC entries.
+If you want the TOC then include this at the start of the post:
+
+<div class="toc"></div>
+
+Then headers (h1, h2 etc) become the TOC entries.
 
 Always start a post with an introductory paragraph. This will appear on the home page of the blog as the excerpt and also will look better when you are social sharing (see below).
 
