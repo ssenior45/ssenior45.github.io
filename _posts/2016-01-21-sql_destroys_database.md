@@ -146,6 +146,9 @@ group by "LocationID"
               ,"Type"
 order by 1,2,3;
 ```
+
+Results:
+
 ```
 LocationID ValidDay   Type        COUNT(*) 
 ---------- ---------- --------- ---------- 
