@@ -62,7 +62,7 @@ From inside the database:
 3. There is no setting in Resource Manager that would limit the PGA consumed by a process
 4. There is a new parameter at 12c (PGA_AGGREGATE_LIMIT) which appears to hard limit the total PGA consumed by the instance which could help, but this is no good for us on 11g
 
-The only way this could be achieved is outside of the database at the os level with, for e.g.:
+One way this could be achieved is outside of the database at the os level with, for e.g.:
 
 1. Using ulimit to set max memory size/virtual memory
 2. Using container groups to limit memory (memory.limit_in_bytes/memory.memsw.limit_in_bytes)
