@@ -280,7 +280,7 @@ So in 11g the process just eats all of the memory available.
 Same test as above, but 
 
 1. connect as non-SYS user
-2. before running the test set PGA_AGGREGATE_LIMIIT:
+2. before running the test set PGA_AGGREGATE_LIMIT:
 
 ```
 SQL> alter system set pga_aggregate_limit=1G scope=memory;
@@ -307,8 +307,9 @@ pga_aggregate_limit                            1282 TRUE       limit of aggregat
 pga_aggregate_target                              0 TRUE       Target size for the aggregate PGA memory consumed by the instance
 ```
 
---now run the test again
---in another session run
+--now run the test again 
+
+--in another session run 
 
 ```
 set linesize 200 pages 1000
@@ -434,7 +435,7 @@ Immediate Kill Session: sess: 0x90ac97b8  OS pid: 3056
 
 Good stuff.
 
-But when I run the test connected as SYS, the session is not killed. Instead I receive this message in the alert.log
+But when I run the test connected as SYS, the session is not killed. Instead I receive this message in the alert.log. This make sense since Oracle doesn't want to be sniping off any sessions that might kill the database.
 
 ```
 Thu Dec 17 04:05:04 2015
@@ -443,7 +444,7 @@ memory are not eligible to receive ORA-4036 interrupts.  Further occurrences
 of this condition will be written to the trace file of the CKPT process.
 ```
 
-PS - if you couldn't get on during the issue to confirm which sessions/sql_id were the biggest PGA consumers then this query will help:
+PS - if you couldn't get on during the issue to confirm which sessions/sql_id were the biggest PGA consumers then this query will help after the event.
 
 ```
 select  to_char(sample_time,'DD-MON-YY HH24:MI') hhmm
@@ -465,7 +466,7 @@ group by to_char(sample_time,'DD-MON-YY HH24:MI')
 having max(pga_allocated) > (1024*1024*500)
 order by 1;
 
-HHMM    INSTANCE_NUMBER     SESSION_ID     SESSION_SERIAL#     SQL_ID     PROGRAM     PGA_MB
+HHMM  INSTANCE_NUMBER     SESSION_ID     SESSION_SERIAL#     SQL_ID     PROGRAM     PGA_MB
 11-DEC-15 19:23     1     1052     4607     79zhfdtsbsppy     oracle@pgx0db01.unix.morrisons.net (J003)     1804.47
 11-DEC-15 19:23     1     1440     1823     79zhfdtsbsppy     oracle@pgx0db01.unix.morrisons.net (J004)     1799.54
 11-DEC-15 19:23     1     1506     6831     79zhfdtsbsppy     oracle@pgx0db01.unix.morrisons.net (J005)     1827.22
