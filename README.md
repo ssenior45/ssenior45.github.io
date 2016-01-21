@@ -8,7 +8,7 @@ Always use ``` for code blocks
 
 If you want the TOC then include this at the start of the post:
 
-<div class="toc"></div>
+```<div class="toc"></div>```
 
 Then headers (h1, h2 etc) become the TOC entries.
 
