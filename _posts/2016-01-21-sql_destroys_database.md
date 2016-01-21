@@ -279,8 +279,8 @@ So in 11g the process just eats all of the memory available.
 
 Same test as above, but 
 
-1) connect as non-SYS user
-2) before running the test set PGA_AGGREGATE_LIMIIT:
+1. connect as non-SYS user
+2. before running the test set PGA_AGGREGATE_LIMIIT:
 
 ```
 SQL> alter system set pga_aggregate_limit=1G scope=memory;
