@@ -57,15 +57,15 @@ This is the summary of the situation:
  
 From inside the database:
 
-	1. PGA_AGGREGATE_TARGET (Target size for the aggregate PGA memory consumed by the instance) is just a target and can be exceeded
-	2. _pga_max_size parameter (Maximum size of the PGA memory for one process) exists but does not limit a process to this value – I have tested and confirmed this to be true
-	3. There is no setting in Resource Manager that would limit the PGA consumed by a process
-	4. There is a new parameter at 12c (PGA_AGGREGATE_LIMIT) which appears to hard limit the total PGA consumed by the instance which could help, but this is no good for us on 11g
+1. PGA_AGGREGATE_TARGET (Target size for the aggregate PGA memory consumed by the instance) is just a target and can be exceeded
+2. _pga_max_size parameter (Maximum size of the PGA memory for one process) exists but does not limit a process to this value – I have tested and confirmed this to be true
+3. There is no setting in Resource Manager that would limit the PGA consumed by a process
+4. There is a new parameter at 12c (PGA_AGGREGATE_LIMIT) which appears to hard limit the total PGA consumed by the instance which could help, but this is no good for us on 11g
 
 The only way this could be achieved is outside of the database at the os level with, for e.g.:
 
-	1. Using ulimit to set max memory size/virtual memory
-	2. Using container groups to limit memory (memory.limit_in_bytes/memory.memsw.limit_in_bytes)
+1. Using ulimit to set max memory size/virtual memory
+2. Using container groups to limit memory (memory.limit_in_bytes/memory.memsw.limit_in_bytes)
 
  
 The problem with both of these at the os level is they would need to be applied to all oracle processes which would make it dangerous/impractical for us to implement.
