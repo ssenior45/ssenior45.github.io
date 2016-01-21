@@ -146,8 +146,8 @@ group by "LocationID"
               ,"Type"
 order by 1,2,3;
 
-LocationID ValidDay   Type        COUNT(*)
----------- ---------- --------- ----------
+LocationID ValidDay   Type        COUNT(*) 
+---------- ---------- --------- ---------- 
          1 2015-08-08 INVENTORY      15000
          1 2015-08-26 INVENTORY      15000
          2 2015-08-08 INVENTORY      15000
