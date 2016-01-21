@@ -6,14 +6,11 @@ tags: XML Performance SQL
 categories: Performance
 date: "2015-12-17 14:34"
 ---
-
-<div class="toc"></div>
-
 We recently had a situation where our 8 node cluster started evicting nodes. I was able to jump on and observe what was happening at the time.
 
 I saw massive swap operations and this was causing the heartbeat mechanism to timeout and fail leading to node evictions.
 
-When we looked inside the database we saw a lot of active sessions all running the same SQL:
+When I looked inside the database I saw a lot of active sessions all running the same SQL:
 
 ```
 SELECT xmlserialize(DOCUMENT xml_inc_root AS CLOB NO indent) AS xmltext
@@ -50,7 +47,7 @@ SELECT xmlserialize(DOCUMENT xml_inc_root AS CLOB NO indent) AS xmltext
 
 The memory being consumed by each of these processes was in the GB.
 
-We stabilised the service and then the post-mortem began.
+Service was stabilised and then the post-mortem began.
 
 It seems using xmlserialize on such a large dataset is the root cause of the issue since oracle builds a temporary lob segment in memory to store the results.
 
