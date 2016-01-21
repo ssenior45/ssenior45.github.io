@@ -9,9 +9,9 @@ date: "2015-12-17 14:34"
 
 <div class="toc"></div>
 
-We recently had a situation where our 8 node cluster started evicting nodes. We were able to jump on and observe what was happening at the time.
+We recently had a situation where our 8 node cluster started evicting nodes. I was able to jump on and observe what was happening at the time.
 
-We saw massive swap operations and this was causing the heartbeat mechanism to timeout and fail leading to node evictions.
+I saw massive swap operations and this was causing the heartbeat mechanism to timeout and fail leading to node evictions.
 
 When we looked inside the database we saw a lot of active sessions all running the same SQL:
 
