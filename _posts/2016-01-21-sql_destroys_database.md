@@ -74,7 +74,7 @@ The problem with both of these at the os level is they would need to be applied 
 
 And here is the proof
 
-11g:
+###11g
 
 --create the base table
 
@@ -273,7 +273,7 @@ If you now increase v_loc_to from 10 to say 50 and repeat the test,  you will se
 So in 11g the process just eats all of the memory available.
 
 
-12c
+###12c
 
 Same test as above, but 
 
