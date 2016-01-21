@@ -435,7 +435,7 @@ Immediate Kill Session: sess: 0x90ac97b8  OS pid: 3056
 
 Good stuff.
 
-But when I run the test connected as SYS, the session is not killed. Instead I receive this message in the alert.log. This make sense since Oracle doesn't want to be sniping off any sessions that might kill the database.
+But when I run the test connected as SYS, the session is not killed. Instead I receive this message in the alert.log. This makes sense since Oracle doesn't want to be sniping off any sessions that might kill the database.
 
 ```
 Thu Dec 17 04:05:04 2015
