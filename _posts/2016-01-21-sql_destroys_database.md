@@ -36,7 +36,7 @@ SELECT xmlserialize(DOCUMENT xml_inc_root AS CLOB NO indent) AS xmltext
                 "UnitID",
                 "Quantity" --,
                -- row_number() OVER (PARTITION BY 'X' ORDER BY ROWID ASC) rn
-              From system.W_Byndr_Stocks
+              From system.Stocks
               where "LocationID" between v_loc_from and v_loc_to
               )
             --WHERE rn BETWEEN v_row_loop_from AND v_row_loop_to
@@ -79,7 +79,7 @@ And here is the proof
 --create the base table
 
 ```
-CREATE TABLE "SYSTEM"."W_BYNDR_STOCKS"
+CREATE TABLE "SYSTEM"."STOCKS"
    (    "ProductID" VARCHAR2(30),
         "LocationID" NUMBER,
         "ValidDay" VARCHAR2(10),
@@ -111,7 +111,7 @@ WHILE (v_loc <= v_loc_limit)
               WHILE (v_line <= v_line_limit)
               LOOP
                      --dbms_output.put_line('v_loc: '||v_loc||', v_line: '||v_line);
-                     v_sql_stmt := 'INSERT INTO SYSTEM.W_BYNDR_STOCKS values (''100001477'','||v_loc||',''2015-08-26'',''2015-08-26T23:59:59+00:00'',''INVENTORY'',''PCS'',0)';
+                     v_sql_stmt := 'INSERT INTO SYSTEM.STOCKS values (''100001477'','||v_loc||',''2015-08-26'',''2015-08-26T23:59:59+00:00'',''INVENTORY'',''PCS'',0)';
                      --dbms_output.put_line(v_sql_stmt);
                      execute immediate v_sql_stmt;
                      v_line := v_line + 1;
@@ -119,7 +119,7 @@ WHILE (v_loc <= v_loc_limit)
               v_line := 1;
               WHILE (v_line <= v_line_limit)
               LOOP
-                     v_sql_stmt := 'INSERT INTO SYSTEM.W_BYNDR_STOCKS values (''100001477'','||v_loc||',''2015-08-08'',''2015-08-26T23:59:59+00:00'',''INVENTORY'',''PCS'',0)';
+                     v_sql_stmt := 'INSERT INTO SYSTEM.STOCKS values (''100001477'','||v_loc||',''2015-08-08'',''2015-08-26T23:59:59+00:00'',''INVENTORY'',''PCS'',0)';
                      --dbms_output.put_line(v_sql_stmt);
                      execute immediate v_sql_stmt;
                      v_line := v_line + 1;
@@ -140,7 +140,7 @@ select "LocationID"
               ,"ValidDay"
               ,"Type"
               ,count(*)
-From   SYSTEM.W_Byndr_Stocks
+From   SYSTEM.Stocks
 group by "LocationID"
               ,"ValidDay"
               ,"Type"
@@ -241,7 +241,7 @@ BEGIN
                 "UnitID",
                 "Quantity" --,
                -- row_number() OVER (PARTITION BY 'X' ORDER BY ROWID ASC) rn
-              From system.W_Byndr_Stocks
+              From system.Stocks
               where "LocationID" between v_loc_from and v_loc_to
               )
             --WHERE rn BETWEEN v_row_loop_from AND v_row_loop_to
@@ -409,7 +409,7 @@ BEGIN
                 "UnitID",
                 "Quantity" --,
                -- row_number() OVER (PARTITION BY 'X' ORDER BY ROWID ASC) rn
-              From system.W_Byndr_Stocks
+              From system.Stocks
               where "LocationID" between v_loc_from and v_loc_to
               )
             --WHERE rn BETWEEN v_row_loop_from AND v_row_loop_to
@@ -467,10 +467,10 @@ having max(pga_allocated) > (1024*1024*500)
 order by 1;
 
 HHMM  INSTANCE_NUMBER     SESSION_ID     SESSION_SERIAL#     SQL_ID     PROGRAM     PGA_MB
-11-DEC-15 19:23     1     1052     4607     79zhfdtsbsppy     oracle@pgx0db01.unix.morrisons.net (J003)     1804.47
-11-DEC-15 19:23     1     1440     1823     79zhfdtsbsppy     oracle@pgx0db01.unix.morrisons.net (J004)     1799.54
-11-DEC-15 19:23     1     1506     6831     79zhfdtsbsppy     oracle@pgx0db01.unix.morrisons.net (J005)     1827.22
-11-DEC-15 19:24     1     851     339     79zhfdtsbsppy     oracle@pgx0db01.unix.morrisons.net (J000)     2150.35
-11-DEC-15 19:24     1     920     2277     79zhfdtsbsppy     oracle@pgx0db01.unix.morrisons.net (J001)     2978.47
+11-DEC-15 19:23     1     1052     4607     79zhfdtsbsppy     oracle@server01.unix.morrisons.net (J003)     1804.47
+11-DEC-15 19:23     1     1440     1823     79zhfdtsbsppy     oracle@server01.unix.morrisons.net (J004)     1799.54
+11-DEC-15 19:23     1     1506     6831     79zhfdtsbsppy     oracle@server01.unix.morrisons.net (J005)     1827.22
+11-DEC-15 19:24     1     851     339     79zhfdtsbsppy     oracle@server01.unix.morrisons.net (J000)     2150.35
+11-DEC-15 19:24     1     920     2277     79zhfdtsbsppy     oracle@server01.unix.morrisons.net (J001)     2978.47
 ...snip...
 ```
