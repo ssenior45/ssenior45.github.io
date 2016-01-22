@@ -466,7 +466,7 @@ SYSTEM                         SALES_MV                       SYSTEM            
 
 This shows the changes to both tables have been made (DBA_TAB_MODIFICATIONS query) and that the partition c0 is stale. So let's refresh the MView and see what method Oracle chooses:
 
-```sql
+```css
 SQL> exec DBMS_MVIEW.REFRESH('SYSTEM.SALES_MV', method=>'?',ATOMIC_REFRESH=>false);
 
 PL/SQL procedure successfully completed.
