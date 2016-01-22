@@ -9,7 +9,7 @@ date: "2016-01-12 09:46"
 Our BI application team reported an issue where a particular job within their batch schedule varied in elapsed time from 10-15mins on some occasions to between 1-2hrs on other occasions.
 
 As always, I asked them to break down the job into it's constituent parts so I could start to get a deeper understanding of where the problem might be.  
-
+<br/>
 At a high level the job did this:
 
 1. Load new data into tables
@@ -20,7 +20,7 @@ At a high level the job did this:
 6. DBMS_STATS.GATHER_TABLE_STATS on the MVIEW
 7. alter session disable parallel dml
 
-*Footnote: point 3 struck me as interesting as I've never come across that underscore parameter before and presumably there is a good reason for it being included. **Robin Moffat** discusses it  [here](https://rnm1978.wordpress.com/2011/01/08/materialised-views-pct-partition-truncation/)*
+*Footnote: point 3 struck me as interesting as I've never come across that underscore parameter before and presumably there is a good reason for it being included.* **Robin Moffat** discusses it  [here](https://rnm1978.wordpress.com/2011/01/08/materialised-views-pct-partition-truncation/).
 
 
 The first thing I did was to start digging around in ASH, comparing a "good" (10-15min) run with a "bad" (1-2hr) run to see if that could shed any light on the difference in execution time. Of course I could and should trace a good and bad run, but this is a quick way to see what I can find out without having to wait for the next run, raise a change (yes!) to trace the session etc.
