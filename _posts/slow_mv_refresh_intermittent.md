@@ -1,5 +1,5 @@
 ---
-published: false
+published: true
 layout: post
 title: "Why is my materialized view refresh quick sometimes and slow at other times"
 tags: Materialized View Performance Refresh
