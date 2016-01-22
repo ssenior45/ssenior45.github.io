@@ -22,6 +22,7 @@ At a high level the job did this:
 
 *Footnote: point 3 struck me as interesting as I've never come across that underscore parameter before and presumably there is a good reason for it being included.* **Robin Moffat** discusses it  [here](https://rnm1978.wordpress.com/2011/01/08/materialised-views-pct-partition-truncation/).
 <br/>
+
 The first thing I did was to start digging around in ASH, comparing a "good" (10-15min) run with a "bad" (1-2hr) run to see if that could shed any light on the difference in execution time. Of course I could and should trace a good and bad run, but this is a quick way to see what I can find out without having to wait for the next run, raise a change (yes!) to trace the session etc.
 
 This is a useful piece of SQL to run against DBA_HIST_ACTIVE_SESS_HISTORY to show how long each SQL_ID was executing between a given date range - in this case I ran it for both the "good" and "bad" batch runs:
@@ -86,7 +87,7 @@ I need to:
 
 But before I do that, I need to go and do some research about the different methods of refreshing MViews.
 
-
+<br/>
 Oracle can refresh a materialized view using either a fast, complete, or force refresh [ref](https://docs.oracle.com/cd/E11882_01/server.112/e10706/repmview.htm#REPLN351).
 
 A very high level summary:
@@ -97,14 +98,14 @@ A very high level summary:
 | FAST | Uses Materialized View Logs which are created on the tables defined in the MView query. These logs track changes since the last refresh. Oracle uses these to identify the changes that occurred in the master since the most recent refresh of the materialized view and then applies these changes to the materialized view. |
 | FORCE | Oracle tries to perform a fast refresh. If a fast refresh is not possible, then Oracle performs a complete refresh. Use the force setting when you want a materialized view to refresh if a fast refresh is not possible |
 
-
-
+<br/>
 That note also introduces the following which was new to me:
 
 > If you have materialized views based on partitioned master tables, then you might be able to use **Partition Change Tracking (PCT)** to identify which materialized view rows correspond to a particular partition. PCT is also used to support fast refresh after partition maintenance operations on a materialized view's master table. PCT-based refresh on a materialized view is possible only if several conditions are satisfied.
 
 Our objects are partitioned so this could definitely be a factor here.
 
+<br/>
 To summarise our MView:
 
 1. It is a complex MView as it uses 3 tables joined in the query. 
@@ -112,12 +113,14 @@ To summarise our MView:
 3. The other 2 tables are non-partitioned and these both have Materialized View Logs created on them
 2. The MView itself is also range partitioned into 115 partitions, using the same key as the partitioned table 
 
+<br/>
 Let's find out a bit more about PCT then [ref](https://docs.oracle.com/cd/E11882_01/server.112/e25554/advmv.htm#DWHSG8227):
 
 > It is possible and advantageous to track freshness to a finer grain than the entire materialized view. The ability to identify which rows in a materialized view are affected by a certain detail table partition, is known as Partition Change Tracking. When one or more of the detail tables are partitioned, it may be possible to identify the specific rows in the materialized view that correspond to a modified detail partition(s); those rows become stale when a partition is modified while all other rows remain fresh.
 
 > You can use PCT to identify which materialized view rows correspond to a particular partition. **PCT is also used to support fast refresh after partition maintenance operations on detail tables.** For instance, if a detail table partition is truncated or dropped, the affected rows in the materialized view are identified and deleted.
 
+<br/>
 To support PCT, a materialized view must satisfy the following requirements:
 
 1. At least one of the detail tables referenced by the materialized view must be partitioned
@@ -131,9 +134,11 @@ To support PCT, a materialized view must satisfy the following requirements:
 9. The COMPATIBILITY initialization parameter must be a minimum of 9.0.0.0.0
 10. PCT is not supported for a materialized view that refers to views, remote tables, or outer joins
 11. PCT refresh is nonatomic
- 
+
+<br/> 
 Excellent, so now I have a much better understanding of how an MView can be refreshed. I can see that we have our configuration setup to try and use PCT (MView partitioning matches the one partitioned table in the query) and fast refreshes (both of the other tables have Materalized View Logs to track changes on those tables).
 
+<br/>
 Back to the issue in hand. I need to prove that it is indeed choosing different refresh methods in the good and bad runs.
 
 After a bit of digging in an excellent post by **Robin Moffat** [here](https://rnm1978.wordpress.com/2011/01/08/materialised-views-pct-partition-truncation/) and Mos note [PCT Refresh Issues Delete Where it Should Issue Truncate (Doc ID 733673.1)](https://support.oracle.com/epmos/faces/DocumentDisplay?id=733673.1&displayIndex=4#CHANGE), we need to use a 10979 trace before we initiate the refresh and it will spit out a trace file that will show us what is going on.
@@ -176,10 +181,13 @@ This shows Oracle evaluating a Complete refresh with a PCT (MIX?) refresh and de
 
 This shows no evaluation of any methods. Oracle has immediately decided that only a Complete refresh is possible. It truncates the entire MView and then recreates it from scratch.
 
+<br/>
 So now we have the proof that it our hypothesis was correct.
 
+<br/>
 Now we need to answer the second question - why is it not able to use a PCT refresh?
 
+<br/>
 Let's revisit the requirements to support PCT fast refreshes and whether we satisfy them:
 
 1. At least one of the detail tables referenced by the materialized view must be partitioned **YES**
