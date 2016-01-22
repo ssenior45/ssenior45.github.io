@@ -176,3 +176,309 @@ So now we have the proof that it our hypothesis was correct.
 
 Now we need to answer the second question - why is it not able to use a PCT refresh?
 
+Let's revisit the requirements to support PCT fast refreshes and whether we satisfy them:
+
+1. At least one of the detail tables referenced by the materialized view must be partitioned **YES**
+2. Partitioned tables must use either range, list or composite partitioning **YES**
+3. The top level partition key must consist of only a single column **YES**
+4. The materialized view must contain either the partition key column or a partition marker or ROWID or join dependent expression of the detail table. See Oracle Database PL/SQL Packages and Types Reference for details regarding the DBMS_MVIEW.PMARKER function **YES**
+5.If PCT is enabled using either the partitioning key column or join expressions, the materialized view should be range or list partitioned **YES**
+6. If you use a GROUP BY clause, the partition key column or the partition marker or ROWID or join dependent expression must be present in the GROUP BY clause **YES**
+7. If you use an analytic window function or the MODEL clause, the partition key column or the partition marker or ROWID or join dependent expression must be present in their respective PARTITION BY subclauses **N/A**
+8. Data modifications can only occur on the partitioned table. If PCT refresh is being done for a table which has join dependent expression in the materialized view, then data modifications should not have occurred in any of the join dependent tables. **HMMM**
+9. The COMPATIBILITY initialization parameter must be a minimum of 9.0.0.0.0 **YES**
+10. PCT is not supported for a materialized view that refers to views, remote tables, or outer joins **N/A**
+11. PCT refresh is nonatomic **YES**
+
+Point 7. Hmmm. Remember our Mview is classed as complex because it has 3 tables joined together. 1 is partitioned the other 2 are not. So this could certainly be the explanation. But because you shouldn't always believe what you read, lets just test that out with a test case to see if it is in fact true.
+
+#Test Case#
+
+*Note - this is an extension of a test case in a post by [Uwe  Hesse](http://uhesse.com/2012/04/05/materialized-views-partition-change-tracking/)*
+
+```
+--set env
+
+alter session set nls_date_format='DD-MON-YY HH24:MI:SS';
+alter session set current_schema=SYSTEM;
+set time on timing on lines 200 pages 10000
+
+
+--create partitioned table
+
+drop table sales purge;
+
+create table sales
+ (product     varchar2(50),
+  channel_id  number,
+  cust_id     number,
+  amount_sold number(10,2),
+  time_id     date)
+partition by list (channel_id)
+(partition c0 values (0),
+ partition c1 values (1),
+ partition c2 values (2),
+ partition c3 values (3),
+ partition c4 values (4)
+);
+
+
+--create non-partitioned tables
+
+drop table channels purge;
+
+create table channels
+(id number,
+description varchar2(50));
+
+drop table customers purge;
+
+create table customers
+(id number,
+company_name varchar(50));
+
+
+--insert test data
+
+insert /*+ append */ into sales
+select
+'Oracle Enterprise Edition' as product,
+mod(rownum,5) as channel_id,
+mod(rownum,1000) as cust_id ,
+5000 as amount_sold,
+to_date
+('01.' || lpad(to_char(mod(rownum,12)+1),2,'0') || '.2010' ,'dd.mm.yyyy')
+as time_id
+from dual connect by level<=10000;
+
+commit;
+
+insert /*+ append */ into channels
+select rownum as id,
+'channel_no_'||to_char(rownum) as description
+from dual connect by level<=100;
+
+commit;
+
+insert /*+ append */ into customers
+select rownum as id,
+'customer_no_'||to_char(rownum) as company_name
+from dual connect by level<=50;
+
+commit;
+
+
+--validate data (optional)
+
+select channel_id,cust_id,count(*)
+from sales
+group by channel_id,cust_id
+order by 1;
+
+select * from channels order by id;
+
+select * from customers order by id;
+
+
+--create MVIEW logs on CHANNELS and CUSTOMERS
+
+CREATE MATERIALIZED VIEW LOG ON CHANNELS WITH ROWID, SEQUENCE (ID, DESCRIPTION) INCLUDING NEW VALUES;
+CREATE MATERIALIZED VIEW LOG ON CUSTOMERS WITH ROWID, SEQUENCE (ID, COMPANY_NAME) INCLUDING NEW VALUES;
+
+
+--gather table and partition stats
+
+exec DBMS_STATS.GATHER_TABLE_STATS(ownname=>'SYSTEM',tabname=>'SALES',granularity=>'ALL');
+exec DBMS_STATS.GATHER_TABLE_STATS(ownname=>'SYSTEM',tabname=>'CHANNELS',granularity=>'ALL');
+exec DBMS_STATS.GATHER_TABLE_STATS(ownname=>'SYSTEM',tabname=>'CUSTOMERS',granularity=>'ALL');
+
+
+--Create partitioned MVIEW - complex because 3 tables are joined
+
+drop MATERIALIZED VIEW SALES_MV;
+
+CREATE MATERIALIZED VIEW SALES_MV (CHANNEL_ID, SUM_SOLD)
+PARTITION BY LIST (CHANNEL_ID)
+(partition c0 values (0),
+ partition c1 values (1),
+ partition c2 values (2),
+ partition c3 values (3),
+ partition c4 values (4)
+)
+  PARALLEL
+  BUILD IMMEDIATE USING NO INDEX
+  REFRESH FORCE ON DEMAND
+  USING DEFAULT LOCAL ROLLBACK SEGMENT
+  USING ENFORCED CONSTRAINTS 
+  ENABLE QUERY REWRITE
+  AS
+  SELECT S.CHANNEL_ID
+        , SUM(S.AMOUNT_SOLD) as SUM_SOLD
+  FROM  SALES S, CHANNELS CH, CUSTOMERS C
+  WHERE S.CHANNEL_ID=CH.ID
+  AND   S.CUST_ID=C.ID
+  GROUP BY S.CHANNEL_ID
+/
+```
+
+Now everything is in place, let's run those tests.
+
+##Test 1 : Only update the partitioned SALES table
+
+```
+SQL> update sales set amount_sold=1 where rownum<2;
+
+1 row updated.
+
+SQL> commit;
+
+Commit complete.
+
+SQL> exec dbms_stats.flush_database_monitoring_info;
+
+PL/SQL procedure successfully completed.
+
+SQL> SELECT  table_name,
+        partition_name,
+        subpartition_name,
+        inserts,
+        updates,
+        deletes,
+        timestamp,
+        truncated ,
+        drop_segments
+FROM    dba_tab_modifications
+WHERE   (table_name like ('SALES%') or table_name like ('CUSTOMER%') or table_name like ('CHANN%'))
+AND     table_owner = 'SYSTEM'
+order by 1;  2    3    4    5    6    7    8    9   10   11   12   13
+
+TABLE_NAME                     PARTITION_NAME                 SUBPARTITION_NAME                 INSERTS    UPDATES    DELETES TIMESTAMP          TRU DROP_SEGMENTS
+------------------------------ ------------------------------ ------------------------------ ---------- ---------- ---------- ------------------ --- -------------
+SALES                                                                                                 0          1          0 22-JAN-16 06:38:09 NO              0
+SALES                          C0                                                                     0          1          0 22-JAN-16 06:38:09 NO              0
+
+SQL> select mview_name,last_refresh_type,last_refresh_date,staleness from dba_mviews where mview_name='SALES_MV';
+
+MVIEW_NAME                     LAST_REF LAST_REFRESH_DATE  STALENESS
+------------------------------ -------- ------------------ -------------------
+SALES_MV                       COMPLETE 22-JAN-16 06:37:29 NEEDS_COMPILE
+```
+
+So because we've updated one of the partitions in the SALES table, the SALES_MV MView needs a compile. It also shows that the last refresh was a COMPLETE one, which makes sense on the initial build.
+
+```
+SQL> select * from dba_mview_detail_partition where mview_name='SALES_MV' order by 6;
+
+OWNER                          MVIEW_NAME                     DETAILOBJ_OWNER                DETAILOBJ_NAME                 DETAIL_PARTITION_NAME          DETAIL_PARTITION_POSITION FRESH
+------------------------------ ------------------------------ ------------------------------ ------------------------------ ------------------------------ ------------------------- -----
+SYSTEM                         SALES_MV                       SYSTEM                         SALES                          C0                                                     1 STALE
+SYSTEM                         SALES_MV                       SYSTEM                         SALES                          C1                                                     2 FRESH
+SYSTEM                         SALES_MV                       SYSTEM                         SALES                          C2                                                     3 FRESH
+SYSTEM                         SALES_MV                       SYSTEM                         SALES                          C3                                                     4 FRESH
+SYSTEM                         SALES_MV                       SYSTEM                         SALES                          C4                                                     5 FRESH
+```
+
+This view shows which partition (c0) is STALE. So let's refresh the MView and see what method Oracle chooses:
+
+```
+SQL> exec DBMS_MVIEW.REFRESH('SYSTEM.SALES_MV', method=>'?',ATOMIC_REFRESH=>false);
+
+PL/SQL procedure successfully completed.
+
+SQL> select mview_name,last_refresh_type,last_refresh_date,staleness from dba_mviews where mview_name='SALES_MV';
+
+MVIEW_NAME                     LAST_REF LAST_REFRESH_DATE  STALENESS
+------------------------------ -------- ------------------ -------------------
+SALES_MV                       FAST_PCT 22-JAN-16 06:39:52 UNKNOWN
+
+SQL> select * from dba_mview_detail_partition where mview_name='SALES_MV' order by 6;
+
+OWNER                          MVIEW_NAME                     DETAILOBJ_OWNER                DETAILOBJ_NAME                 DETAIL_PARTITION_NAME          DETAIL_PARTITION_POSITION FRESH
+------------------------------ ------------------------------ ------------------------------ ------------------------------ ------------------------------ ------------------------- -----
+SYSTEM                         SALES_MV                       SYSTEM                         SALES                          C0                                                     1 FRESH
+SYSTEM                         SALES_MV                       SYSTEM                         SALES                          C1                                                     2 FRESH
+SYSTEM                         SALES_MV                       SYSTEM                         SALES                          C2                                                     3 FRESH
+SYSTEM                         SALES_MV                       SYSTEM                         SALES                          C3                                                     4 FRESH
+SYSTEM                         SALES_MV                       SYSTEM                         SALES                          C4                                                     5 FRESH
+```
+
+The refresh was done using PCT (last_refresh shows FAST_PCT now).
+
+
+##Test 2 : Update the partitioned SALES table, and either the CHANNELS or the CUSTOMERS table
+
+```
+SQL> update sales set amount_sold=1 where rownum<2;
+
+1 row updated.
+
+SQL> update channels set description=description where rownum<2;
+
+1 row updated.
+
+SQL> commit;
+
+Commit complete.
+
+SQL> exec dbms_stats.flush_database_monitoring_info;
+
+PL/SQL procedure successfully completed.
+
+SQL> SELECT  table_name,
+        partition_name,
+        subpartition_name,
+        inserts,
+        updates,
+        deletes,
+        timestamp,
+        truncated ,
+        drop_segments
+FROM    dba_tab_modifications
+WHERE   (table_name like ('SALES%') or table_name like ('CUSTOMER%') or table_name like ('CHANN%'))
+AND     table_owner = 'SYSTEM'
+order by 1;  2    3    4    5    6    7    8    9   10   11   12   13
+
+TABLE_NAME                     PARTITION_NAME                 SUBPARTITION_NAME                 INSERTS    UPDATES    DELETES TIMESTAMP          TRU DROP_SEGMENTS
+------------------------------ ------------------------------ ------------------------------ ---------- ---------- ---------- ------------------ --- -------------
+CHANNELS                                                                                              0          1          0 22-JAN-16 06:45:39 NO              0
+SALES                                                                                                 0          2          0 22-JAN-16 06:45:39 NO              0
+SALES                          C0                                                                     0          2          0 22-JAN-16 06:45:39 NO              0
+SALES_MV                                                                                              0          0          0 22-JAN-16 06:45:39 NO              0
+SALES_MV                       C0                                                                     0          0          0 22-JAN-16 06:45:39 YES             0
+
+SQL> select mview_name,last_refresh_type,last_refresh_date,staleness from dba_mviews where mview_name='SALES_MV';
+
+MVIEW_NAME                     LAST_REF LAST_REFRESH_DATE  STALENESS
+------------------------------ -------- ------------------ -------------------
+SALES_MV                       FAST_PCT 22-JAN-16 06:39:52 NEEDS_COMPILE
+
+SQL> select * from dba_mview_detail_partition where mview_name='SALES_MV' order by 6;
+
+OWNER                          MVIEW_NAME                     DETAILOBJ_OWNER                DETAILOBJ_NAME                 DETAIL_PARTITION_NAME          DETAIL_PARTITION_POSITION FRESH
+------------------------------ ------------------------------ ------------------------------ ------------------------------ ------------------------------ ------------------------- -----
+SYSTEM                         SALES_MV                       SYSTEM                         SALES                          C0                                                     1 STALE
+SYSTEM                         SALES_MV                       SYSTEM                         SALES                          C1                                                     2 FRESH
+SYSTEM                         SALES_MV                       SYSTEM                         SALES                          C2                                                     3 FRESH
+SYSTEM                         SALES_MV                       SYSTEM                         SALES                          C3                                                     4 FRESH
+SYSTEM                         SALES_MV                       SYSTEM                         SALES                          C4                                                     5 FRESH
+```
+
+This shows the changes to both tables have been made (DBA_TAB_MODIFICATIONS query) and that the partition c0 is stale. So let's refresh the MView and see what method Oracle chooses:
+
+```
+SQL> exec DBMS_MVIEW.REFRESH('SYSTEM.SALES_MV', method=>'?',ATOMIC_REFRESH=>false);
+
+PL/SQL procedure successfully completed.
+
+SQL> select mview_name,last_refresh_type,last_refresh_date,staleness from dba_mviews where mview_name='SALES_MV';
+
+MVIEW_NAME                     LAST_REF LAST_REFRESH_DATE  STALENESS
+------------------------------ -------- ------------------ -------------------
+SALES_MV                       COMPLETE 22-JAN-16 06:48:16 FRESH
+```
+
+So this proves the documentation to be correct.
+
+Armed with this information we were able to see that just before a "bad" refresh time, data was changing in one of the non-partitioned tables aswell as in the partitioned table defined in the MView. 
+
+On the times when we had a "good" refresh, only data in the partitioned table was being changed.
