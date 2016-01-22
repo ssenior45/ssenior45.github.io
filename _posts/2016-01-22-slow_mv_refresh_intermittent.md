@@ -197,7 +197,7 @@ Point 7. Hmmm. Remember our Mview is classed as complex because it has 3 tables 
 
 *Note - this is an extension of a test case in a post by [Uwe  Hesse](http://uhesse.com/2012/04/05/materialized-views-partition-change-tracking/)*
 
-```
+```sql
 REM set env
 
 alter session set nls_date_format='DD-MON-YY HH24:MI:SS';
