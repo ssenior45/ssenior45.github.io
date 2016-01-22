@@ -222,10 +222,9 @@ partition by list (channel_id)
  partition c3 values (3),
  partition c4 values (4)
 );
-```
 
-```
---create non-partitioned tables
+
+REM create non-partitioned tables
 
 drop table channels purge;
 
@@ -240,7 +239,7 @@ create table customers
 company_name varchar(50));
 
 
---insert test data
+REM insert test data
 
 insert /*+ append */ into sales
 select
@@ -270,7 +269,7 @@ from dual connect by level<=50;
 commit;
 
 
---validate data (optional)
+REM validate data (optional)
 
 select channel_id,cust_id,count(*)
 from sales
@@ -282,20 +281,20 @@ select * from channels order by id;
 select * from customers order by id;
 
 
---create MVIEW logs on CHANNELS and CUSTOMERS
+REM create MVIEW logs on CHANNELS and CUSTOMERS
 
 CREATE MATERIALIZED VIEW LOG ON CHANNELS WITH ROWID, SEQUENCE (ID, DESCRIPTION) INCLUDING NEW VALUES;
 CREATE MATERIALIZED VIEW LOG ON CUSTOMERS WITH ROWID, SEQUENCE (ID, COMPANY_NAME) INCLUDING NEW VALUES;
 
 
---gather table and partition stats
+REM gather table and partition stats
 
 exec DBMS_STATS.GATHER_TABLE_STATS(ownname=>'SYSTEM',tabname=>'SALES',granularity=>'ALL');
 exec DBMS_STATS.GATHER_TABLE_STATS(ownname=>'SYSTEM',tabname=>'CHANNELS',granularity=>'ALL');
 exec DBMS_STATS.GATHER_TABLE_STATS(ownname=>'SYSTEM',tabname=>'CUSTOMERS',granularity=>'ALL');
 
 
---Create partitioned MVIEW - complex because 3 tables are joined
+REM Create partitioned MVIEW - complex because 3 tables are joined
 
 drop MATERIALIZED VIEW SALES_MV;
 
