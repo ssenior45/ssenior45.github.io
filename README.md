@@ -2,7 +2,8 @@
 
 # Basics of post writing
 
-[Markdown Cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)
+[Markdown Cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)<br/>
+[Github Flavored Markdown](https://help.github.com/articles/writing-on-github/) explains nuances about GitHub.
 
 Always use ``` for code blocks
 
@@ -12,7 +13,20 @@ If you want the TOC then include this at the start of the post:
 
 Then headers (h1, h2 etc) become the TOC entries.
 
+**Appears this happens even without the div at the start**
+
 Always start a post with an introductory paragraph. This will appear on the home page of the blog as the excerpt and also will look better when you are social sharing (see below).
+
+
+# Paragraphs and line spacing
+
+To force a line-break you must enter:
+
+"<br/>" (without the quotes)
+
+manually in your post.
+
+Write the post first then proof read and visually inspect it and add any where you see fit is generally the recommended approach.
 
 
 # Meta-Tags
