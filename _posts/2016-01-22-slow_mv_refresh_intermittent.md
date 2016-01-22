@@ -120,7 +120,7 @@ To support PCT, a materialized view must satisfy the following requirements:
 1. At least one of the detail tables referenced by the materialized view must be partitioned
 2. Partitioned tables must use either range, list or composite partitioning
 3. The top level partition key must consist of only a single column
-4. The materialized view must contain either the partition key column or a partition marker or ROWID or join dependent expression of the detail table. See Oracle Database PL/SQL Packages and Types Reference for details regarding the DBMS_MVIEW.PMARKER function
+4. The materialized view must contain either the partition key column or a partition marker or ROWID or join dependent expression of the detail table. See Oracle Database PL/SQL Packages and Types Reference for details regarding the DBMS_MVIEW.PMARKER function 
 5.If PCT is enabled using either the partitioning key column or join expressions, the materialized view should be range or list partitioned
 6. If you use a GROUP BY clause, the partition key column or the partition marker or ROWID or join dependent expression must be present in the GROUP BY clause
 7. If you use an analytic window function or the MODEL clause, the partition key column or the partition marker or ROWID or join dependent expression must be present in their respective PARTITION BY subclauses
@@ -182,8 +182,8 @@ Let's revisit the requirements to support PCT fast refreshes and whether we sati
 1. At least one of the detail tables referenced by the materialized view must be partitioned **YES**
 2. Partitioned tables must use either range, list or composite partitioning **YES**
 3. The top level partition key must consist of only a single column **YES**
-4. The materialized view must contain either the partition key column or a partition marker or ROWID or join dependent expression of the detail table. See Oracle Database PL/SQL Packages and Types Reference for details regarding the DBMS_MVIEW.PMARKER function **YES**
-5.If PCT is enabled using either the partitioning key column or join expressions, the materialized view should be range or list partitioned **YES**
+4. The materialized view must contain either the partition key column or a partition marker or ROWID or join dependent expression of the detail table. See Oracle Database PL/SQL Packages and Types Reference for details regarding the DBMS_MVIEW.PMARKER function **YES** 
+5. If PCT is enabled using either the partitioning key column or join expressions, the materialized view should be range or list partitioned **YES**
 6. If you use a GROUP BY clause, the partition key column or the partition marker or ROWID or join dependent expression must be present in the GROUP BY clause **YES**
 7. If you use an analytic window function or the MODEL clause, the partition key column or the partition marker or ROWID or join dependent expression must be present in their respective PARTITION BY subclauses **N/A**
 8. Data modifications can only occur on the partitioned table. If PCT refresh is being done for a table which has join dependent expression in the materialized view, then data modifications should not have occurred in any of the join dependent tables. **HMMM**
