@@ -10,6 +10,7 @@ Our BI application team reported an issue where a particular job within their ba
 
 As always, I asked them to break down the job into it's constituent parts so I could start to get a deeper understanding of where the problem might be.
 
+
 At a high level the job did this:
 
 1. Load new data into tables
@@ -21,6 +22,7 @@ At a high level the job did this:
 7. alter session disable parallel dml
 
 *Footnote: point 3 struck me as interesting as I've never come across that underscore parameter before and presumably there is a good reason for it being included. **Robin Moffat** discusses it  [here](https://rnm1978.wordpress.com/2011/01/08/materialised-views-pct-partition-truncation/)*
+
 
 The first thing I did was to start digging around in ASH, comparing a "good" (10-15min) run with a "bad" (1-2hr) run to see if that could shed any light on the difference in execution time. Of course I could and should trace a good and bad run, but this is a quick way to see what I can find out without having to wait for the next run, raise a change (yes!) to trace the session etc.
 
@@ -76,6 +78,7 @@ SQL_ID        SQL_EXEC_START            LAST_SAMPLE_TIME          DUR_MINS      
 
 So on the good run the MView refresh was using a MERGE INTO then an INSERT and it took 01:54, and on the bad run it was only doing an INSERT taking 42:29. Quite a difference eh.
 
+
 Now, I'm no expert in MView refreshes, but what I do know that they can be refreshed completely (COMPLETE) or incrementally (FAST). So the initial theory here is that is what is happening - on the good runs Oracle is able to do a fast refresh whereas on the bad runs Oracle is doing a complete refresh.
 
 I need to:
@@ -84,6 +87,7 @@ I need to:
 2. Understand why it is doing this
 
 But before I do that, I need to go and do some research about the different methods of refreshing MViews.
+
 
 Oracle can refresh a materialized view using either a fast, complete, or force refresh [ref](https://docs.oracle.com/cd/E11882_01/server.112/e10706/repmview.htm#REPLN351).
 
@@ -94,6 +98,7 @@ A very high level summary:
 | COMPLETE  | To perform a complete refresh of a materialized view, the server that manages the materialized view executes the materialized view's defining query, which essentially re-creates the materialized view. To refresh the materialized view, the result set of the query replaces the existing materialized view data. Oracle can perform a complete refresh for any materialized view.  |
 | FAST | Uses Materialized View Logs which are created on the tables defined in the MView query. These logs track changes since the last refresh. Oracle uses these to identify the changes that occurred in the master since the most recent refresh of the materialized view and then applies these changes to the materialized view. |
 | FORCE | Oracle tries to perform a fast refresh. If a fast refresh is not possible, then Oracle performs a complete refresh. Use the force setting when you want a materialized view to refresh if a fast refresh is not possible |
+
 
 
 That note also introduces the following which was new to me:
