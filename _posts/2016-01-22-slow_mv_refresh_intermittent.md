@@ -222,8 +222,9 @@ partition by list (channel_id)
  partition c3 values (3),
  partition c4 values (4)
 );
+```
 
-
+```
 --create non-partitioned tables
 
 drop table channels purge;
