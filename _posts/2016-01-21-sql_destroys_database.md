@@ -359,19 +359,19 @@ order by 7 DESC;
 And you will see the PGA_MB rise, and rise, and rise...
 
 ```
-INST:(SID,SER#) USER (OSUSER)   MODULE (PROGRAM OS_PID     STATUS   LAST_ACTIVITY     HRS_AGO SQL_ID        WAIT_EVENT                       SEC_WT     PGA_MB
+INST:(SID,SER) USER (OSUSER)   MODULE (PROGRAM OS_PID     STATUS   LAST_ACTIVITY     HRS_AGO SQL_ID        WAIT_EVENT                       SEC_WT     PGA_MB
 --------------- --------------- --------------- ---------- -------- -------------- ---------- ------------- ---------------------------- ---------- ----------
 1: (60,12655)   SYSTEM (oracle) SQL*Plus        3056       ACTIVE   17-12-15 05:21        .01 at3s6amwg91pp db file sequential read               0       4.42
 1: (55,18731)   SYS (oracle)    sqlplus@localho 3266       ACTIVE   17-12-15 05:22          0 ag95rgbqryd5r SQL*Net message to client             0       1.48
 
-INST:(SID,SER#) USER (OSUSER)   MODULE (PROGRAM OS_PID     STATUS   LAST_ACTIVITY     HRS_AGO SQL_ID        WAIT_EVENT                       SEC_WT     PGA_MB
+INST:(SID,SER) USER (OSUSER)   MODULE (PROGRAM OS_PID     STATUS   LAST_ACTIVITY     HRS_AGO SQL_ID        WAIT_EVENT                       SEC_WT     PGA_MB
 --------------- --------------- --------------- ---------- -------- -------------- ---------- ------------- ---------------------------- ---------- ----------
 1: (60,12655)   SYSTEM (oracle) SQL*Plus        3056       ACTIVE   17-12-15 05:21        .05 at3s6amwg91pp db file sequential read               0     558.54
 1: (55,18731)   SYS (oracle)    sqlplus@localho 3266       ACTIVE   17-12-15 05:24          0 ag95rgbqryd5r SQL*Net message to client             0       1.48
 
 ..snip...
 
-INST:(SID,SER#) USER (OSUSER)   MODULE (PROGRAM OS_PID     STATUS   LAST_ACTIVITY     HRS_AGO SQL_ID        WAIT_EVENT                       SEC_WT     PGA_MB
+INST:(SID,SER) USER (OSUSER)   MODULE (PROGRAM OS_PID     STATUS   LAST_ACTIVITY     HRS_AGO SQL_ID        WAIT_EVENT                       SEC_WT     PGA_MB
 --------------- --------------- --------------- ---------- -------- -------------- ---------- ------------- ---------------------------- ---------- ----------
 1: (60,12655)   SYSTEM (oracle) SQL*Plus        3056       ACTIVE   17-12-15 05:21        .22 at3s6amwg91pp acknowledge over PGA limit           69    1199.54
 1: (44,29847)   MYDBA (oracle)  Unknown         3316       ACTIVE   17-12-15 05:32        .04 417vkyxgfhqh8 null event                            0       1.11
