@@ -359,19 +359,19 @@ order by 7 DESC;
 And you will see the PGA_MB rise, and rise, and rise...
 
 ```
-INST:(SID,SER) USER (OSUSER)   MODULE (PROGRAM OS_PID     STATUS   LAST_ACTIVITY     HRS_AGO SQL_ID        WAIT_EVENT                       SEC_WT     PGA_MB
+INST:(SID,SER)  USER (OSUSER)   MODULE (PROGRAM OS_PID     STATUS   LAST_ACTIVITY     HRS_AGO SQL_ID        WAIT_EVENT                       SEC_WT     PGA_MB
 --------------- --------------- --------------- ---------- -------- -------------- ---------- ------------- ---------------------------- ---------- ----------
 1: (60,12655)   SYSTEM (oracle) SQL*Plus        3056       ACTIVE   17-12-15 05:21        .01 at3s6amwg91pp db file sequential read               0       4.42
 1: (55,18731)   SYS (oracle)    sqlplus@localho 3266       ACTIVE   17-12-15 05:22          0 ag95rgbqryd5r SQL*Net message to client             0       1.48
 
-INST:(SID,SER) USER (OSUSER)   MODULE (PROGRAM OS_PID     STATUS   LAST_ACTIVITY     HRS_AGO SQL_ID        WAIT_EVENT                       SEC_WT     PGA_MB
+INST:(SID,SER)  USER (OSUSER)   MODULE (PROGRAM OS_PID     STATUS   LAST_ACTIVITY     HRS_AGO SQL_ID        WAIT_EVENT                       SEC_WT     PGA_MB
 --------------- --------------- --------------- ---------- -------- -------------- ---------- ------------- ---------------------------- ---------- ----------
 1: (60,12655)   SYSTEM (oracle) SQL*Plus        3056       ACTIVE   17-12-15 05:21        .05 at3s6amwg91pp db file sequential read               0     558.54
 1: (55,18731)   SYS (oracle)    sqlplus@localho 3266       ACTIVE   17-12-15 05:24          0 ag95rgbqryd5r SQL*Net message to client             0       1.48
 
 ..snip...
 
-INST:(SID,SER) USER (OSUSER)   MODULE (PROGRAM OS_PID     STATUS   LAST_ACTIVITY     HRS_AGO SQL_ID        WAIT_EVENT                       SEC_WT     PGA_MB
+INST:(SID,SER)  USER (OSUSER)   MODULE (PROGRAM OS_PID     STATUS   LAST_ACTIVITY     HRS_AGO SQL_ID        WAIT_EVENT                       SEC_WT     PGA_MB
 --------------- --------------- --------------- ---------- -------- -------------- ---------- ------------- ---------------------------- ---------- ----------
 1: (60,12655)   SYSTEM (oracle) SQL*Plus        3056       ACTIVE   17-12-15 05:21        .22 at3s6amwg91pp acknowledge over PGA limit           69    1199.54
 1: (44,29847)   MYDBA (oracle)  Unknown         3316       ACTIVE   17-12-15 05:32        .04 417vkyxgfhqh8 null event                            0       1.11
@@ -448,9 +448,9 @@ PS - if you couldn't get on during the issue to confirm which sessions/sql_id we
 
 ```
 select  to_char(sample_time,'DD-MON-YY HH24:MI') hhmm
-        ,instance_number
-        ,session_id
-        ,session_serial#
+        ,instance_number ins
+        ,session_id sid
+        ,session_serial# ser
         ,sql_id
         ,program
         ,round((max(pga_allocated)/1024/1024),2) PGA_MB
@@ -466,11 +466,12 @@ group by to_char(sample_time,'DD-MON-YY HH24:MI')
 having max(pga_allocated) > (1024*1024*500)
 order by 1;
 
-HHMM  INSTANCE_NUMBER     SESSION_ID     SESSION_SERIAL#     SQL_ID     PROGRAM     PGA_MB
-11-DEC-15 19:23     1     1052     4607     79zhfdtsbsppy     oracle@server01.unix.morrisons.net (J003)     1804.47
-11-DEC-15 19:23     1     1440     1823     79zhfdtsbsppy     oracle@server01.unix.morrisons.net (J004)     1799.54
-11-DEC-15 19:23     1     1506     6831     79zhfdtsbsppy     oracle@server01.unix.morrisons.net (J005)     1827.22
-11-DEC-15 19:24     1     851     339     79zhfdtsbsppy     oracle@server01.unix.morrisons.net (J000)     2150.35
-11-DEC-15 19:24     1     920     2277     79zhfdtsbsppy     oracle@server01.unix.morrisons.net (J001)     2978.47
+HHMM              INS     SID     SER# SQL_ID             PROGRAM                                         PGA_MB
+---------------- ---- ------- -------- ------------------ -------------------------------------------- ---------
+11-DEC-15 19:23     1    1052     4607 79zhfdtsbsppy      oracle@server01.unix.morrisons.net (J003)      1804.47
+11-DEC-15 19:23     1    1440     1823 79zhfdtsbsppy      oracle@server01.unix.morrisons.net (J004)      1799.54
+11-DEC-15 19:23     1    1506     6831 79zhfdtsbsppy      oracle@server01.unix.morrisons.net (J005)      1827.22
+11-DEC-15 19:24     1     851      339 79zhfdtsbsppy      oracle@server01.unix.morrisons.net (J000)      2150.35
+11-DEC-15 19:24     1     920     2277 79zhfdtsbsppy      oracle@server01.unix.morrisons.net (J001)      2978.47
 ...snip...
 ```
