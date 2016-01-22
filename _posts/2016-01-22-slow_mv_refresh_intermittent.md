@@ -23,7 +23,7 @@ At a high level the job did this:
 *Footnote: point 3 struck me as interesting as I've never come across that underscore parameter before and presumably there is a good reason for it being included.* **Robin Moffat** *discusses it   [here](https://rnm1978.wordpress.com/2011/01/08/materialised-views-pct-partition-truncation/).*
 
 <br/>
-The first thing I did was to start digging around in ASH, comparing a "good" (10-15min) run with a "bad" (1-2hr) run to see if that could shed any light on the difference in execution time. Of course I could and should trace a good and bad run, but this is a quick way to see what I can find out without having to wait for the next run, raise a change (yes!) to trace the session etc.
+The first thing I did was to start digging around in ASH, comparing a "good" (10-15min) run with a "bad" (1-2hr) run to see if that could shed any light on the difference in execution time. Of course I could and should trace a good and bad run, but this is a quick way to see what I can find out without having to wait for the next run, and worse still raise a change (yes!) to trace the session.
 
 This is a useful piece of SQL to run against DBA_HIST_ACTIVE_SESS_HISTORY to show how long each SQL_ID was executing between a given date range - in this case I ran it for both the "good" and "bad" batch runs:
 
@@ -78,7 +78,7 @@ SQL_ID        SQL_EXEC_START            LAST_SAMPLE_TIME          DUR_MINS      
 So on the good run the MView refresh was using a MERGE INTO then an INSERT and it took 01:54, and on the bad run it was only doing an INSERT taking 42:29. Quite a difference eh.
 
 <br/>
-Now, I'm no expert in MView refreshes, but what I do know that they can be refreshed completely (COMPLETE) or incrementally (FAST). So the initial theory here is that is what is happening - on the good runs Oracle is able to do a fast refresh whereas on the bad runs Oracle is doing a complete refresh.
+Now, I'm no expert in MView refreshes, but what I do know that they can be refreshed completely (COMPLETE) or incrementally (FAST). So the initial thinking here is that this is exactly what is happening: on the good runs Oracle is able to do a fast refresh whereas on the bad runs Oracle is doing a complete refresh.
 
 I need to:
 
@@ -106,9 +106,9 @@ That note also introduces the following which was new to me:
 Our objects are partitioned so this could definitely be a factor here.
 
 <br/>
-To summarise our MView:
+Let's summarise our MView's attributes:
 
-1. It is a complex MView as it uses 3 tables joined in the query. 
+1. It is a complex MView as it uses 3 tables joined in the query 
 2. 1 of those tables is range partitioned into 115 partitions
 3. The other 2 tables are non-partitioned and these both have Materialized View Logs created on them
 2. The MView itself is also range partitioned into 115 partitions, using the same key as the partitioned table 
@@ -182,7 +182,7 @@ This shows Oracle evaluating a Complete refresh with a PCT (MIX?) refresh and de
 This shows no evaluation of any methods. Oracle has immediately decided that only a Complete refresh is possible. It truncates the entire MView and then recreates it from scratch.
 
 <br/>
-So now we have the proof that it our hypothesis was correct.
+So now we have the proof from our traces that our hypothesis about different refresh methods being chosen was correct.
 
 <br/>
 Now we need to answer the second question - why is it not able to use a PCT refresh?
@@ -414,7 +414,7 @@ SYSTEM                         SALES_MV                       SYSTEM            
 SYSTEM                         SALES_MV                       SYSTEM                         SALES                          C4                                                     5 FRESH
 ```
 
-The refresh was done using PCT (last_refresh shows FAST_PCT now).
+The refresh was done using PCT (last_refresh_type shows FAST_PCT now).
 
 
 ##Test 2 : Update the partitioned SALES table, and either the CHANNELS or the CUSTOMERS table
@@ -491,6 +491,6 @@ SALES_MV                       COMPLETE 22-JAN-16 06:48:16 FRESH
 
 So this proves the documentation to be correct.
 
-Armed with this information we were able to see that just before a "bad" refresh time, data was changing in one of the non-partitioned tables aswell as in the partitioned table defined in the MView. 
+Armed with this information we were able to see that just before a "bad" refresh time, data was changing in one of the non-partitioned tables in addition to data in the partitioned table defined in the MView. 
 
 On the times when we had a "good" refresh, only data in the partitioned table was being changed.
