@@ -326,7 +326,7 @@ Now everything is in place, let's run those tests.
 
 ##Test 1 : Only update the partitioned SALES table
 
-```
+```sql
 SQL> update sales set amount_sold=1 where rownum<2;
 
 1 row updated.
@@ -367,7 +367,7 @@ SALES_MV                       COMPLETE 22-JAN-16 06:37:29 NEEDS_COMPILE
 
 So because we've updated one of the partitions in the SALES table, the SALES_MV MView needs a compile. It also shows that the last refresh was a COMPLETE one, which makes sense on the initial build.
 
-```
+```sql
 SQL> select * from dba_mview_detail_partition where mview_name='SALES_MV' order by 6;
 
 OWNER                          MVIEW_NAME                     DETAILOBJ_OWNER                DETAILOBJ_NAME                 DETAIL_PARTITION_NAME          DETAIL_PARTITION_POSITION FRESH
@@ -408,7 +408,7 @@ The refresh was done using PCT (last_refresh shows FAST_PCT now).
 
 ##Test 2 : Update the partitioned SALES table, and either the CHANNELS or the CUSTOMERS table
 
-```
+```sql
 SQL> update sales set amount_sold=1 where rownum<2;
 
 1 row updated.
@@ -466,7 +466,7 @@ SYSTEM                         SALES_MV                       SYSTEM            
 
 This shows the changes to both tables have been made (DBA_TAB_MODIFICATIONS query) and that the partition c0 is stale. So let's refresh the MView and see what method Oracle chooses:
 
-```
+```sql
 SQL> exec DBMS_MVIEW.REFRESH('SYSTEM.SALES_MV', method=>'?',ATOMIC_REFRESH=>false);
 
 PL/SQL procedure successfully completed.
