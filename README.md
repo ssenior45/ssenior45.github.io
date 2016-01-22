@@ -9,7 +9,7 @@ Always use ``` for code blocks
 
 If you want the TOC then include this at the start of the post:
 
-```<div class="toc"></div>```
+`<div class="toc"></div>`
 
 Then headers (h1, h2 etc) become the TOC entries.
 
@@ -22,7 +22,7 @@ Always start a post with an introductory paragraph. This will appear on the home
 
 To force a line-break you must enter:
 
-"<br/>" (without the quotes)
+`<br/>`
 
 manually in your post.
 
