@@ -8,7 +8,7 @@ date: "2016-01-12 09:46"
 ---
 Our BI application team reported an issue where a particular job within their batch schedule varied in elapsed time from 10-15mins on some occasions to between 1-2hrs on other occasions.
 
-As always, I asked them to break down the job into it's constituent parts so I could start to get a deeper understanding of where the problem might be.  
+As always, I asked them to break down the job into it's constituent parts so I could start to get a deeper understanding as to where the problem might be.  
 <br/>
 At a high level the job did this:
 
