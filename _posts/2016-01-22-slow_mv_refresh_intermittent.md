@@ -27,7 +27,7 @@ The first thing I did was to start digging around in ASH, comparing a "good" (10
 
 This is a useful piece of SQL to run against DBA_HIST_ACTIVE_SESS_HISTORY to show how long each SQL_ID was executing between a given date range - in this case I ran it for both the "good" and "bad" batch runs:
 
-{% highlight ruby %}
+{% highlight sql %}
 set lines 200 pages 1000
 col sql_exec_start for a25
 col LAST_SAMPLE_TIME for a25
@@ -58,22 +58,22 @@ Unfortunately we didn't have any MODULE or ACTION set for this particular job by
 
 ### good ###
 
-```
+{% highlight sql %}
 SQL_ID        SQL_EXEC_START            LAST_SAMPLE_TIME          DUR_MINS                       SQL_TEXT
 ------------- ------------------------- ------------------------- ------------------------------ --------------------------------------------------
 fkndgf5rbd7sa 12-JAN-16 13:36:45        12-JAN-16 13:38:39        +000000000 00:01:54.075        /* MV_REFRESH (MRG) */ MERGE INTO "XXXXXX"."AAAAAA
 d7mdgsbrqy4bd 12-JAN-16 13:38:40        12-JAN-16 13:38:50        +000000000 00:00:10.039        /* MV_REFRESH (INS) */ INSERT /*+ APPEND BYPASS_RE
-```
+{% endhighlight %}
 
 ### bad ### 
 
-```
+{% highlight sql %}
 SQL_ID        SQL_EXEC_START            LAST_SAMPLE_TIME          DUR_MINS                       SQL_TEXT
 ------------- ------------------------- ------------------------- ------------------------------ --------------------------------------------------
 621azpj5fhuan 12-JAN-16 04:35:07        12-JAN-16 05:30:02        +000000000 00:54:55.001        BEGIN
                                                                                                  DBMS_MVIEW.REFRESH('XXXX.WC_GL_BALANCE_A'
 0zpm3xdh8b2aa 12-JAN-16 04:35:28        12-JAN-16 05:17:57        +000000000 00:42:29.655        /* MV_REFRESH (INS) */INSERT /*+ BYPASS_RECURSIVE_
-```
+{% endhighlight %}
 
 So on the good run the MView refresh was using a MERGE INTO then an INSERT and it took 01:54, and on the bad run it was only doing an INSERT taking 42:29. Quite a difference eh.
 
@@ -147,7 +147,7 @@ What do we find in the traces (heavily edited here)?
 
 ### good ###
 
-```
+{% highlight ini %}
 partition [1020] is retrieved. 
 partition [1030] is retrieved. 
 partition [1040] is retrieved. 
@@ -167,17 +167,17 @@ Value of _mv_refresh_costing : rule_pt_pd_fa_co
  ALTER TABLE "XXXX"."OUR_MVIEW" TRUNCATE PARTITION PART_20160201 UPDATE GLOBAL INDEXES 
  ALTER TABLE "XXXX"."OUR_MVIEW" TRUNCATE PARTITION PART_20151228 UPDATE GLOBAL INDEXES
  /* MV_REFRESH (INS) */ INSERT /*+ APPEND BYPASS_RECURSIVE_CHECK */...
-```
+{% endhighlight %}
 
 This shows Oracle evaluating a Complete refresh with a PCT (MIX?) refresh and deciding to use the PCT - MIX version. We can see it firstly doing the MERGE INTO, then truncating the partitions in the MView that it is going to refresh, and finally doing the insert into the MView but **only for those partitions it truncated**. Note this sequence of events correlates back to what we saw from our ASH query earlier.
 
 ### bad ###
 
-```
+{% highlight ini %}
  Refresh method picked Complete 
  /* MV_REFRESH (DEL) */ truncate table "XXXX"."OUR_MVIEW" purge snapshot log
  /* MV_REFRESH (INS) */INSERT INTO "XXXX"."OUR_MVIEW"...
-```
+{% endhighlight %}
 
 This shows no evaluation of any methods. Oracle has immediately decided that only a Complete refresh is possible. It truncates the entire MView and then recreates it from scratch.
 
@@ -208,7 +208,7 @@ Point 8. Hmmm. Remember our Mview is classed as complex because it has 3 tables 
 
 *Note - this is an extension of a test case in a post by [Uwe  Hesse](http://uhesse.com/2012/04/05/materialized-views-partition-change-tracking/)*
 
-``` ini
+{% highlight sql %}
 REM set env
 
 alter session set nls_date_format='DD-MON-YY HH24:MI:SS';
@@ -331,13 +331,13 @@ PARTITION BY LIST (CHANNEL_ID)
   AND   S.CUST_ID=C.ID
   GROUP BY S.CHANNEL_ID
 /
-```
+{% endhighlight %}
 
 Now everything is in place, let's run those tests.
 
 ## Test 1 : Only update the partitioned SALES table ## 
 
-```
+{% highlight sql %}
 SQL> update sales set amount_sold=1 where rownum<2;
 
 1 row updated.
@@ -374,11 +374,11 @@ SQL> select mview_name,last_refresh_type,last_refresh_date,staleness from dba_mv
 MVIEW_NAME                     LAST_REF LAST_REFRESH_DATE  STALENESS
 ------------------------------ -------- ------------------ -------------------
 SALES_MV                       COMPLETE 22-JAN-16 06:37:29 NEEDS_COMPILE
-```
+{% endhighlight %}
 
 So because we've updated one of the partitions in the SALES table, the SALES_MV MView needs a compile. It also shows that the last refresh was a COMPLETE one, which makes sense on the initial build.
 
-```
+{% highlight sql %}
 SQL> select * from dba_mview_detail_partition where mview_name='SALES_MV' order by 6;
 
 OWNER                          MVIEW_NAME                     DETAILOBJ_OWNER                DETAILOBJ_NAME                 DETAIL_PARTITION_NAME          DETAIL_PARTITION_POSITION FRESH
@@ -388,11 +388,11 @@ SYSTEM                         SALES_MV                       SYSTEM            
 SYSTEM                         SALES_MV                       SYSTEM                         SALES                          C2                                                     3 FRESH
 SYSTEM                         SALES_MV                       SYSTEM                         SALES                          C3                                                     4 FRESH
 SYSTEM                         SALES_MV                       SYSTEM                         SALES                          C4                                                     5 FRESH
-```
+{% endhighlight %}
 
 This view shows which partition (c0) is STALE. So let's refresh the MView and see what method Oracle chooses:
 
-```
+{% highlight sql %}
 SQL> exec DBMS_MVIEW.REFRESH('SYSTEM.SALES_MV', method=>'?',ATOMIC_REFRESH=>false);
 
 PL/SQL procedure successfully completed.
@@ -412,14 +412,14 @@ SYSTEM                         SALES_MV                       SYSTEM            
 SYSTEM                         SALES_MV                       SYSTEM                         SALES                          C2                                                     3 FRESH
 SYSTEM                         SALES_MV                       SYSTEM                         SALES                          C3                                                     4 FRESH
 SYSTEM                         SALES_MV                       SYSTEM                         SALES                          C4                                                     5 FRESH
-```
+{% endhighlight %}
 
 The refresh was done using PCT (last_refresh_type shows FAST_PCT now).
 
 
 ## Test 2 : Update the partitioned SALES table, and either the CHANNELS or the CUSTOMERS table ##
 
-```
+{% highlight sql %}
 SQL> update sales set amount_sold=1 where rownum<2;
 
 1 row updated.
@@ -473,11 +473,11 @@ SYSTEM                         SALES_MV                       SYSTEM            
 SYSTEM                         SALES_MV                       SYSTEM                         SALES                          C2                                                     3 FRESH
 SYSTEM                         SALES_MV                       SYSTEM                         SALES                          C3                                                     4 FRESH
 SYSTEM                         SALES_MV                       SYSTEM                         SALES                          C4                                                     5 FRESH
-```
+{% endhighlight %}
 
 This shows the changes to both tables have been made (DBA_TAB_MODIFICATIONS query) and that the partition c0 is stale. So let's refresh the MView and see what method Oracle chooses:
 
-```
+{% highlight sql %}
 SQL> exec DBMS_MVIEW.REFRESH('SYSTEM.SALES_MV', method=>'?',ATOMIC_REFRESH=>false);
 
 PL/SQL procedure successfully completed.
@@ -487,7 +487,7 @@ SQL> select mview_name,last_refresh_type,last_refresh_date,staleness from dba_mv
 MVIEW_NAME                     LAST_REF LAST_REFRESH_DATE  STALENESS
 ------------------------------ -------- ------------------ -------------------
 SALES_MV                       COMPLETE 22-JAN-16 06:48:16 FRESH
-```
+{% endhighlight %}
 
 So this proves the documentation to be correct.
 
