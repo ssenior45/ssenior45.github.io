@@ -65,6 +65,7 @@ SQL_ID        SQL_EXEC_START            LAST_SAMPLE_TIME          DUR_MINS      
 ------------- ------------------------- ------------------------- ------------------------------ --------------------------------------------------
 
 fkndgf5rbd7sa 12-JAN-16 13:36:45        12-JAN-16 13:38:39        +000000000 00:01:54.075        /* MV_REFRESH (MRG) */ MERGE INTO "XXXXXX"."AAAAAA
+
 d7mdgsbrqy4bd 12-JAN-16 13:38:40        12-JAN-16 13:38:50        +000000000 00:00:10.039        /* MV_REFRESH (INS) */ INSERT /*+ APPEND BYPASS_RE
 {% endhighlight %}
 
@@ -73,8 +74,10 @@ d7mdgsbrqy4bd 12-JAN-16 13:38:40        12-JAN-16 13:38:50        +000000000 00:
 {% highlight SQL %}
 SQL_ID        SQL_EXEC_START            LAST_SAMPLE_TIME          DUR_MINS                       SQL_TEXT
 ------------- ------------------------- ------------------------- ------------------------------ --------------------------------------------------
+
 621azpj5fhuan 12-JAN-16 04:35:07        12-JAN-16 05:30:02        +000000000 00:54:55.001        BEGIN
                                                                                                  DBMS_MVIEW.REFRESH('XXXX.WC_GL_BALANCE_A'
+
 0zpm3xdh8b2aa 12-JAN-16 04:35:28        12-JAN-16 05:17:57        +000000000 00:42:29.655        /* MV_REFRESH (INS) */INSERT /*+ BYPASS_RECURSIVE_
 {% endhighlight %}
 
