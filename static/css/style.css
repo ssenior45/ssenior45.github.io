@@ -172,7 +172,7 @@ code,pre{
 }
 
 code {
-  white-space: pre;	
+  white-space: pre !important;	
 }
 
 body,.sheet{
