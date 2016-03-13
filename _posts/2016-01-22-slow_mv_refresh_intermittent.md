@@ -63,6 +63,7 @@ Unfortunately we didn't have any MODULE or ACTION set for this particular job by
 {% highlight SQL %}
 SQL_ID        SQL_EXEC_START            LAST_SAMPLE_TIME          DUR_MINS                       SQL_TEXT
 ------------- ------------------------- ------------------------- ------------------------------ --------------------------------------------------
+
 fkndgf5rbd7sa 12-JAN-16 13:36:45        12-JAN-16 13:38:39        +000000000 00:01:54.075        /* MV_REFRESH (MRG) */ MERGE INTO "XXXXXX"."AAAAAA
 d7mdgsbrqy4bd 12-JAN-16 13:38:40        12-JAN-16 13:38:50        +000000000 00:00:10.039        /* MV_REFRESH (INS) */ INSERT /*+ APPEND BYPASS_RE
 {% endhighlight %}
