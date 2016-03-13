@@ -27,7 +27,7 @@ The first thing I did was to start digging around in ASH, comparing a "good" (10
 
 This is a useful piece of SQL to run against DBA_HIST_ACTIVE_SESS_HISTORY to show how long each SQL_ID was executing between a given date range - in this case I ran it for both the "good" and "bad" batch runs:
 
-```ini
+~~~ ini
 set lines 200 pages 1000
 col sql_exec_start for a25
 col LAST_SAMPLE_TIME for a25
@@ -52,18 +52,18 @@ and consumer_group_id=925847 --our batch consumer group
 group by sql_id) a, dba_hist_sqltext b
 where a.sql_id=b.sql_id(+)
 order by 2;
-```
+~~~
 
 Unfortunately we didn't have any MODULE or ACTION set for this particular job by DBMS_APPLICATION_INFO so the results brought back all of the batch jobs running at the time. With a bit of manual filtering of the results on SQL_TEXT based on my understanding of the process flow, the following were the results I was interested in:
 
 ### good ###
 
-```ini
+~~~ ini
 SQL_ID        SQL_EXEC_START            LAST_SAMPLE_TIME          DUR_MINS                       SQL_TEXT
 ------------- ------------------------- ------------------------- ------------------------------ --------------------------------------------------
 fkndgf5rbd7sa 12-JAN-16 13:36:45        12-JAN-16 13:38:39        +000000000 00:01:54.075        /* MV_REFRESH (MRG) */ MERGE INTO "XXXXXX"."AAAAAA
 d7mdgsbrqy4bd 12-JAN-16 13:38:40        12-JAN-16 13:38:50        +000000000 00:00:10.039        /* MV_REFRESH (INS) */ INSERT /*+ APPEND BYPASS_RE
-```
+~~~
 
 ### bad ### 
 
