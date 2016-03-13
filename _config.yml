@@ -6,7 +6,8 @@ kramdown:
   input: GFM
   auto_ids: true
   syntax_highlighter: rouge
-  syntax_highlighter_opts: {default_lang: bash}
+  syntax_highlighter_opts:
+    default_lang: python
   
 paginate: 10
 paginate_path: ":num"
