@@ -42,11 +42,11 @@ function code_example_with_javascript_syntax_highlights() {
 
 code
 
-```
+~~~
 function code_example_with_javascript_syntax_highlights() {
   console.log("Showing the syntax highlighting rendering of code using gh-pages-blog.");
 }
-```
+~~~
 
 ###And double indent
 Something else in geordie
@@ -56,7 +56,7 @@ asdasdasdasssspppp
 back to work for me!
 ssdsdssss
 
-```
+~~~
 --------------------------------------------------------------------------------
 --
 -- File name:   sql_monitor_summary.sql
@@ -103,11 +103,11 @@ and   status like '%&3%'
 order by sql_exec_start desc
 ) where rownum <= nvl(&4,10)
 /
-```
+~~~
 
 Show me the last 20 statements currently executing:
 
-```
+~~~
 SQL> @/shared/oracle/ssenior/scripts/sql_monitor_summary.sql % % EXECUTING 20
 
 INST STATUS                      SID SQL_ID        SQL_EXEC_ID SQL_EXEC_START      LAST_REFRESH_TIME       PX_REQ     PX_GOT PLAN_HASH_VALUE   DURATION     DBTIME BUFFER_GETS DISK_READS  IO_MBYTES
@@ -134,4 +134,4 @@ INST STATUS                      SID SQL_ID        SQL_EXEC_ID SQL_EXEC_START   
    1 EXECUTING                  1782 apq6011myzjp9    16777319 24-Nov-15 16:35:50  24-Nov-15 16:41:08                             3094607888        318      320.2     4650836      44820      33911
 
 20 rows selected.
-```
+~~~
