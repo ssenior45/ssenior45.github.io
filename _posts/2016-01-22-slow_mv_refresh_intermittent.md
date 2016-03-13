@@ -202,9 +202,9 @@ Let's revisit the requirements to support PCT fast refreshes and whether we sati
 10. PCT is not supported for a materialized view that refers to views, remote tables, or outer joins **N/A**
 11. PCT refresh is nonatomic **YES**
 
-Point 7. Hmmm. Remember our Mview is classed as complex because it has 3 tables joined together. 1 is partitioned the other 2 are not. So this could certainly be the explanation. But because you shouldn't always believe what you read, lets just test that out with a test case to see if it is in fact true.
+Point 8. Hmmm. Remember our Mview is classed as complex because it has 3 tables joined together. 1 is partitioned the other 2 are not. So this could certainly be the explanation. But because you shouldn't always believe what you read, lets just test that out with a test case to see if it is in fact true.
 
-#Test Case#
+# Test Case
 
 *Note - this is an extension of a test case in a post by [Uwe  Hesse](http://uhesse.com/2012/04/05/materialized-views-partition-change-tracking/)*
 
@@ -335,7 +335,7 @@ PARTITION BY LIST (CHANNEL_ID)
 
 Now everything is in place, let's run those tests.
 
-##Test 1 : Only update the partitioned SALES table
+## Test 1 : Only update the partitioned SALES table ## 
 
 ```
 SQL> update sales set amount_sold=1 where rownum<2;
@@ -417,7 +417,7 @@ SYSTEM                         SALES_MV                       SYSTEM            
 The refresh was done using PCT (last_refresh_type shows FAST_PCT now).
 
 
-##Test 2 : Update the partitioned SALES table, and either the CHANNELS or the CUSTOMERS table
+## Test 2 : Update the partitioned SALES table, and either the CHANNELS or the CUSTOMERS table ##
 
 ```
 SQL> update sales set amount_sold=1 where rownum<2;
