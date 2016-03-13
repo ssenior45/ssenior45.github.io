@@ -1,5 +1,5 @@
 ---
-published: false
+published: true
 layout: post
 title: "Build The COSMAC ELF A Low-Cost Experimenter’s Microcomputer"
 tags: computing old
