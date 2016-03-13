@@ -165,27 +165,19 @@ body{
 }
 
 code,pre{
-    font-family:  "Menlo", "Monaco", "Consolas", "Courier New", "monospace", "Helvetica", "Tahoma", "Arial", sans-serif;
+  font-family:  "Menlo", "Monaco", "Consolas", "Courier New", "monospace", "Helvetica", "Tahoma", "Arial", sans-serif;
   font-size: 12px;
     /*line-height: 1.5;*/
   background-color: #d9d9d9;
 }
 
+code {
+  white-space: pre;	
+}
+
 body,.sheet{
     font-size: 14px;
     line-height: 1.75;
-}
-
-.highlight pre code * {
-  white-space: nowrap;    // this sets all children inside to nowrap
-}
-
-.highlight pre {
-  overflow-x: auto;       // this sets the scrolling in x
-}
-
-.highlight pre code {
-  white-space: pre;       // forces <code> to respect <pre> formatting
 }
 
 a:link {text-decoration: none}		/* 未访问的链接 */
