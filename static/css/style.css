@@ -176,6 +176,17 @@ body,.sheet{
     line-height: 1.75;
 }
 
+.highlight pre code * {
+  white-space: nowrap;    // this sets all children inside to nowrap
+}
+
+.highlight pre {
+  overflow-x: auto;       // this sets the scrolling in x
+}
+
+.highlight pre code {
+  white-space: pre;       // forces <code> to respect <pre> formatting
+}
 
 a:link {text-decoration: none}		/* 未访问的链接 */
 a:visited {text-decoration: none}	/* 已访问的链接 */
