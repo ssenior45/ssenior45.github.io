@@ -48,6 +48,7 @@ from  dba_hist_active_sess_history
 where sample_time between to_date('12-JAN-16 04:32:05','DD-MON-YY HH24:MI:SS') and to_date('12-JAN-16 05:45:56','DD-MON-YY HH24:MI:SS')
 and   session_type='FOREGROUND'
 --filter here by session_id, module, action, consumer_group_id etc
+
 and consumer_group_id=925847 --our batch consumer group 
 group by sql_id) a, dba_hist_sqltext b
 where a.sql_id=b.sql_id(+)
