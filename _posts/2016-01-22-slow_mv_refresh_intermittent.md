@@ -27,7 +27,7 @@ The first thing I did was to start digging around in ASH, comparing a "good" (10
 
 This is a useful piece of SQL to run against DBA_HIST_ACTIVE_SESS_HISTORY to show how long each SQL_ID was executing between a given date range - in this case I ran it for both the "good" and "bad" batch runs:
 
-```
+```sql
 set lines 200 pages 1000
 col sql_exec_start for a25
 col LAST_SAMPLE_TIME for a25
@@ -58,7 +58,7 @@ Unfortunately we didn't have any MODULE or ACTION set for this particular job by
 
 ### good ###
 
-```
+```sql
 SQL_ID        SQL_EXEC_START            LAST_SAMPLE_TIME          DUR_MINS                       SQL_TEXT
 ------------- ------------------------- ------------------------- ------------------------------ --------------------------------------------------
 fkndgf5rbd7sa 12-JAN-16 13:36:45        12-JAN-16 13:38:39        +000000000 00:01:54.075        /* MV_REFRESH (MRG) */ MERGE INTO "XXXXXX"."AAAAAA
@@ -67,7 +67,7 @@ d7mdgsbrqy4bd 12-JAN-16 13:38:40        12-JAN-16 13:38:50        +000000000 00:
 
 ### bad ### 
 
-```
+```sql
 SQL_ID        SQL_EXEC_START            LAST_SAMPLE_TIME          DUR_MINS                       SQL_TEXT
 ------------- ------------------------- ------------------------- ------------------------------ --------------------------------------------------
 621azpj5fhuan 12-JAN-16 04:35:07        12-JAN-16 05:30:02        +000000000 00:54:55.001        BEGIN
@@ -147,7 +147,7 @@ What do we find in the traces (heavily edited here)?
 
 ### good ###
 
-```
+```bash
 partition [1020] is retrieved. 
 partition [1030] is retrieved. 
 partition [1040] is retrieved. 
@@ -173,7 +173,7 @@ This shows Oracle evaluating a Complete refresh with a PCT (MIX?) refresh and de
 
 ### bad ###
 
-```
+```bash
  Refresh method picked Complete 
  /* MV_REFRESH (DEL) */ truncate table "XXXX"."OUR_MVIEW" purge snapshot log
  /* MV_REFRESH (INS) */INSERT INTO "XXXX"."OUR_MVIEW"...
@@ -208,7 +208,7 @@ Point 8. Hmmm. Remember our Mview is classed as complex because it has 3 tables 
 
 *Note - this is an extension of a test case in a post by [Uwe  Hesse](http://uhesse.com/2012/04/05/materialized-views-partition-change-tracking/)*
 
-```
+```sql
 REM set env
 
 alter session set nls_date_format='DD-MON-YY HH24:MI:SS';
@@ -337,7 +337,7 @@ Now everything is in place, let's run those tests.
 
 ## Test 1 : Only update the partitioned SALES table ## 
 
-```
+```ini
 SQL> update sales set amount_sold=1 where rownum<2;
 
 1 row updated.
