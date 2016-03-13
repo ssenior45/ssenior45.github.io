@@ -1,12 +1,11 @@
 permalink: /:year-:month-:day/:title/
 
-#highlighter: pygments
-syntax-highlighting:
-  enabled : true
-  css: syntax.css
-  
+highlighter: rouge
+markdown: kramdown
 kramdown:
   input: GFM
+  auto_ids: true
+  syntax_highlighter: rouge
 
 paginate: 10
 paginate_path: ":num"
