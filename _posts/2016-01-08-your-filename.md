@@ -142,6 +142,7 @@ SQL> @/shared/oracle/ssenior/scripts/sql_monitor_summary.sql % % EXECUTING 20
 
 INST STATUS                      SID SQL_ID        SQL_EXEC_ID SQL_EXEC_START      LAST_REFRESH_TIME       PX_REQ     PX_GOT PLAN_HASH_VALUE   DURATION     DBTIME BUFFER_GETS DISK_READS  IO_MBYTES
 ---- -------------------- ---------- ------------- ----------- ------------------- ------------------- ---------- ---------- --------------- ---------- ---------- ----------- ---------- ----------
+
    1 EXECUTING                  3507 5bs6rvnn7wn3q    16867067 24-Nov-15 16:41:02  24-Nov-15 16:41:08                             1705989724          6       5.95        1965        717          6
    1 EXECUTING                  1445 5bs6rvnn7wn3q    16867060 24-Nov-15 16:40:52  24-Nov-15 16:41:08                             1705989724         16      15.93        9126       1838         15
    1 EXECUTING                  1399 5bs6rvnn7wn3q    16867057 24-Nov-15 16:40:43  24-Nov-15 16:41:07                             1705989724         24      24.12       29132       4062         32
