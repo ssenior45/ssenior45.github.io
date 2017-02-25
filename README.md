@@ -1,4 +1,15 @@
+GIT
 
+Make changes
+
+git status
+git diff
+git add -A
+git status
+git commit -m "Test"
+git status
+
+------
 
 # Basics of post writing
 
