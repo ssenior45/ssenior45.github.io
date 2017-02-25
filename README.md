@@ -18,6 +18,7 @@ forever list
 
 if not
 
+cd /home/stevensenior/jekyll-hook/
 forever start jekyll-hook.js
 
 ------
