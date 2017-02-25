@@ -468,10 +468,10 @@ order by 1;
 
 HHMM              INS     SID     SER# SQL_ID             PROGRAM                                         PGA_MB
 ---------------- ---- ------- -------- ------------------ -------------------------------------------- ---------
-11-DEC-15 19:23     1    1052     4607 79zhfdtsbsppy      oracle@server01.unix.morrisons.net (J003)      1804.47
-11-DEC-15 19:23     1    1440     1823 79zhfdtsbsppy      oracle@server01.unix.morrisons.net (J004)      1799.54
-11-DEC-15 19:23     1    1506     6831 79zhfdtsbsppy      oracle@server01.unix.morrisons.net (J005)      1827.22
-11-DEC-15 19:24     1     851      339 79zhfdtsbsppy      oracle@server01.unix.morrisons.net (J000)      2150.35
-11-DEC-15 19:24     1     920     2277 79zhfdtsbsppy      oracle@server01.unix.morrisons.net (J001)      2978.47
+11-DEC-15 19:23     1    1052     4607 79zhfdtsbsppy      oracle@server01.unix.somewhere.net (J003)      1804.47
+11-DEC-15 19:23     1    1440     1823 79zhfdtsbsppy      oracle@server01.unix.somewhere.net (J004)      1799.54
+11-DEC-15 19:23     1    1506     6831 79zhfdtsbsppy      oracle@server01.unix.somewhere.net (J005)      1827.22
+11-DEC-15 19:24     1     851      339 79zhfdtsbsppy      oracle@server01.unix.somewhere.net (J000)      2150.35
+11-DEC-15 19:24     1     920     2277 79zhfdtsbsppy      oracle@server01.unix.somewhere.net (J001)      2978.47
 ...snip...
 ```
