@@ -10,6 +10,16 @@ git commit -m "Test"
 git status
 git push
 
+If changes don't appear check settings in GitHub -> Webhooks. See if it was delivered.
+
+Check jeykll-webhook is running on server:
+
+forever list
+
+if not
+
+forever start jekyll-hook.js
+
 ------
 
 # Basics of post writing
