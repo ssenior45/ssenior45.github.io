@@ -18,6 +18,7 @@ forever list
 
 if not
 
+su - stevensenior
 cd /home/stevensenior/jekyll-hook/
 forever start jekyll-hook.js
 
